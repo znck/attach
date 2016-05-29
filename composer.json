@@ -1,0 +1,53 @@
+{
+  "name": "znck/attach",
+  "type": "library",
+  "description": "Attach and forget about media management.",
+  "keywords": [
+    "znck",
+    "attach"
+  ],
+  "homepage": "https://github.com/znck/attach",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Rahul Kadyan",
+      "email": "hi@znck.me",
+      "homepage": "http://znck.me",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.0",
+    "illuminate/support": "~5.2",
+    "illuminate/database": "~5.2",
+    "illuminate/http": "~5.2"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.1",
+    "phpunit/php-code-coverage": "^3.1",
+    "satooshi/php-coveralls": "^1.0",
+    "friendsofphp/php-cs-fixer": "^1.11",
+    "mockery/mockery": "^0.9.4",
+    "fzaninotto/faker": "^1.5",
+    "graham-campbell/testbench": "^3.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Znck\\Attach\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Test\\Znck\\Attach\\": "tests"
+    }
+  },
+  "scripts": {
+    "test": "phpunit",
+    "cs": "php-cs-fixer fix"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0-dev"
+    }
+  }
+}
