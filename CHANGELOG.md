@@ -2,9 +2,6 @@
 
 All Notable changes to `attach` will be documented in this file.
 
-> TODO: Add a changelog.
-> PRs welcome.
-
 ## [Unreleased]
 
 ### Added
@@ -22,4 +19,4 @@ All Notable changes to `attach` will be documented in this file.
 ### Security
 - Nothing
 
-[Unreleased]: https://github.com/znck/attach/compare/v2.2...HEAD
+[Unreleased]: https://github.com/znck/attach/compare/v0.0.1...HEAD

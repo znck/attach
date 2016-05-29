@@ -6,8 +6,8 @@ PSRs you support to avoid any confusion with users and contributors.
 ![attach](cover.png)
 
 <p align="center">
-  <a href="https://styleci.io/repos/:styleci_id">
-    <img src="https://styleci.io/repos/:styleci_id/shield" alt="StyleCI Status" />
+  <a href="https://styleci.io/repos/59930684">
+    <img src="https://styleci.io/repos/59930684/shield" alt="StyleCI Status" />
   </a>
   <a href="https://circleci.com/gh/znck/attach">
     <img src="https://circleci.com/gh/znck/attach.svg?style=svg" alt="Build Status" />
@@ -40,10 +40,7 @@ $ composer require znck/attach
 
 ## Usage
 
-``` php
-$skeleton = new League\Skeleton();
-echo $skeleton->echoPhrase('Hello, League!');
-```
+> TODO: Add usage docs.
 
 ## Change log
 
