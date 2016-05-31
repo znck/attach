@@ -26,6 +26,7 @@ interface Media
      * Get URI for media attachment or its manipulation.
      *
      * @param string|null $manipulation Name of the manipulation.
+     *
      * @return string
      */
     public function getUri(string $manipulation = null): string;
@@ -41,6 +42,7 @@ interface Media
      * Store a media attachment file on disk.
      *
      * @param string|resource $file Content of the media attachment file.
+     *
      * @return void
      */
     public function setContent($file);
@@ -50,7 +52,7 @@ interface Media
      *
      * @return array
      */
-    public function getHttpHeaders(): array ;
+    public function getHttpHeaders(): array;
 
     /**
      * Secure hash to verify file access authenticity without logging in.
@@ -77,6 +79,7 @@ interface Media
      * Set visibility of the media attachment.
      *
      * @param string $visibility
+     *
      * @return void
      */
     public function setVisibility(string $visibility);
@@ -99,6 +102,7 @@ interface Media
      * Verify if security token is valid for the media.
      *
      * @param string $hash
+     *
      * @return bool
      */
     public function verifySecureToken(string $hash): bool;
@@ -106,9 +110,10 @@ interface Media
     /**
      * Store a manipulated version of media attachment on disk.
      *
-     * @param string $name Name of manipulation.
+     * @param string          $name Name of manipulation.
      * @param string|resource $file Content of manipulated media attachment file.
-     * @param string $mime Mime type string for the manipulated media attachment.
+     * @param string          $mime Mime type string for the manipulated media attachment.
+     *
      * @return bool
      */
     public function setManipulation(string $name, $file, $mime) : bool;
@@ -117,14 +122,16 @@ interface Media
      * Get HTTP header for manipulated media attachment.
      *
      * @param string $name Name ot the manipulation.
+     *
      * @return array
      */
-    public function getManipulationHeader(string $name) : array ;
+    public function getManipulationHeader(string $name) : array;
 
     /**
      * Get content from manipulated media attachment file.
      *
      * @param string $name Name of the manipulation.
+     *
      * @return string
      */
     public function getManipulationContent(string $name);

@@ -79,7 +79,7 @@ class Manager implements Contracts\Manager
         }
 
         if (! $manipulator instanceof Manipulation) {
-            throw new ManipulationNotFoundException;
+            throw new ManipulationNotFoundException();
         }
 
         return $manipulator;

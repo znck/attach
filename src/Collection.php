@@ -6,7 +6,7 @@ use Znck\Attach\Contracts\Media;
 class Collection extends EloquentCollection
 {
     protected $collection_name;
-    
+
     private $model;
 
     public function __construct($collection_name, Media $model, $items = [])
@@ -16,7 +16,7 @@ class Collection extends EloquentCollection
         if ($collection_name) {
             $this->setCollectionAccessor($collection_name);
         }
-    }   
+    }
 
     public function setCollectionAccessor(string $name)
     {

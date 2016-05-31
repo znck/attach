@@ -33,14 +33,14 @@ class DefaultUploader implements Uploader
 
     /**
      * @param \Symfony\Component\HttpFoundation\File\UploadedFile $file
-     * @param array $attributes
-     * 
+     * @param array                                               $attributes
+     *
      * @return \Illuminate\Database\Eloquent\Model|void|Media
      */
     public function upload($file, array $attributes = [])
     {
         $media = $this->makeModel($attributes + ['mime' => $file->getMimeType(), 'filename' => $file->getClientOriginalName()]);
-        
+
         $media->save();
 
 
@@ -51,12 +51,12 @@ class DefaultUploader implements Uploader
                 $this->manager->add($manipulation);
             }
         }
-        
+
         $this->manager->runOnQueue($media);
-        
+
         return $media;
     }
-    
+
     protected function makeModel(array $attributes)
     {
         return $this->container->make(config('attach.model'), [$attributes]);
