@@ -4,7 +4,7 @@ interface Uploader
 {
     /**
      * @param \Symfony\Component\HttpFoundation\File\UploadedFile $file
-     * @param array $attributes
+     * @param array                                               $attributes
      *
      * @return \Illuminate\Database\Eloquent\Model|Media
      */

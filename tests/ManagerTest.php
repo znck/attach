@@ -3,7 +3,6 @@
 use Exception;
 use Illuminate\Contracts\Queue\Queue;
 use InvalidArgumentException;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Znck\Attach\Attachment;
 use Znck\Attach\Contracts\Manipulation;
 use Znck\Attach\Exceptions\ManipulationFailedException;
@@ -12,7 +11,8 @@ use Znck\Attach\Manager;
 
 class ManagerTest extends TestCase
 {
-    public function test_available() {
+    public function test_available()
+    {
         $manager = new Manager($this->app);
 
         $manipulations = $manager->available();
@@ -22,7 +22,8 @@ class ManagerTest extends TestCase
         $this->assertCount(count(glob(__DIR__.'/../src/Manipulators/*.php')), $manipulations);
     }
 
-    public function test_applied() {
+    public function test_applied()
+    {
         $manager = new Manager($this->app);
 
         $this->assertTrue(is_array($manager->applied()));
@@ -34,7 +35,8 @@ class ManagerTest extends TestCase
         $this->assertCount(1, $manager->applied());
     }
 
-    public function test_add_custom() {
+    public function test_add_custom()
+    {
         $manager = new Manager($this->app);
         $manipulator = $this->getMockBuilder(Manipulation::class)->setMethods(
             ['setAttributes', 'getName', 'apply']
@@ -50,31 +52,33 @@ class ManagerTest extends TestCase
         $manager->add('Foo', ['foo' => 'bar']);
     }
 
-    public function test_add_fail() {
+    public function test_add_fail()
+    {
         $manager = new Manager($this->app);
         $this->expectException(ManipulationNotFoundException::class);
         $manager->add('FooBarBarBoom');
     }
 
-    public function test_run_with_collection() {
+    public function test_run_with_collection()
+    {
         $manager = new Manager($this->app);
         $manipulator = $this->getMockBuilder(Manipulation::class)
             ->setMethods(['setAttributes', 'apply'])
             ->getMockForAbstractClass();
 
         $media = Attachment::create([
-            'filename' => 'foo.jpg',
-            'path' => '',
-            'mime' => 'image/jpeg',
-            'size' => 100,
+            'filename'   => 'foo.jpg',
+            'path'       => '',
+            'mime'       => 'image/jpeg',
+            'size'       => 100,
             'visibility' => 'public',
             'collection' => 'baz',
         ]);
         Attachment::create([
-            'filename' => 'bar.jpg',
-            'path' => '',
-            'mime' => 'image/jpeg',
-            'size' => 100,
+            'filename'   => 'bar.jpg',
+            'path'       => '',
+            'mime'       => 'image/jpeg',
+            'size'       => 100,
             'visibility' => 'public',
             'collection' => 'baz',
         ]);
@@ -93,17 +97,18 @@ class ManagerTest extends TestCase
         $manager->run($media->getCollection());
     }
 
-    public function test_run_with_media() {
+    public function test_run_with_media()
+    {
         $manager = new Manager($this->app);
         $manipulator = $this->getMockBuilder(Manipulation::class)
             ->setMethods(['setAttributes', 'apply'])
             ->getMockForAbstractClass();
 
         $media = Attachment::create([
-            'filename' => 'foo.jpg',
-            'path' => '',
-            'mime' => 'image/jpeg',
-            'size' => 100,
+            'filename'   => 'foo.jpg',
+            'path'       => '',
+            'mime'       => 'image/jpeg',
+            'size'       => 100,
             'visibility' => 'public',
         ]);
         $this->assertTrue($media->exists);
@@ -123,7 +128,8 @@ class ManagerTest extends TestCase
         $manager->run($media);
     }
 
-    public function test_run_with_anything() {
+    public function test_run_with_anything()
+    {
         $manager = new Manager($this->app);
         $manipulator = $this->getMockBuilder(Manipulation::class)
             ->setMethods(['setAttributes', 'apply'])
@@ -140,7 +146,8 @@ class ManagerTest extends TestCase
         $manager->run(null);
     }
 
-    public function test_run_with_failing_manipulator() {
+    public function test_run_with_failing_manipulator()
+    {
         $manager = new Manager($this->app);
         $manipulator = $this->getMockBuilder(Manipulation::class)
             ->setMethods(['setAttributes', 'apply'])
@@ -159,15 +166,16 @@ class ManagerTest extends TestCase
         $manager->add('Foo');
         $this->expectException(ManipulationFailedException::class);
         $manager->run(Attachment::create([
-            'filename' => 'foo.jpg',
-            'path' => '',
-            'mime' => 'image/jpeg',
-            'size' => 100,
+            'filename'   => 'foo.jpg',
+            'path'       => '',
+            'mime'       => 'image/jpeg',
+            'size'       => 100,
             'visibility' => 'public',
         ]));
     }
 
-    public function test_run_with_failing_manipulator_check_exception() {
+    public function test_run_with_failing_manipulator_check_exception()
+    {
         $manager = new Manager($this->app);
         $manipulator = $this->getMockBuilder(Manipulation::class)
             ->setMethods(['setAttributes', 'apply'])
@@ -186,10 +194,10 @@ class ManagerTest extends TestCase
         $manager->add('Foo');
         try {
             $manager->run(Attachment::create([
-                'filename' => 'foo.jpg',
-                'path' => '',
-                'mime' => 'image/jpeg',
-                'size' => 100,
+                'filename'   => 'foo.jpg',
+                'path'       => '',
+                'mime'       => 'image/jpeg',
+                'size'       => 100,
                 'visibility' => 'public',
             ]));
         } catch (ManipulationFailedException $e) {
@@ -197,7 +205,8 @@ class ManagerTest extends TestCase
         }
     }
 
-    public function test_run_on_queue() {
+    public function test_run_on_queue()
+    {
         $queue = $this->getMockBuilder(Queue::class)
             ->setMethods(['push'])
             ->getMockForAbstractClass();
@@ -210,10 +219,10 @@ class ManagerTest extends TestCase
             ->willReturn(true);
 
         $manager->runOnQueue(Attachment::create([
-            'filename' => 'foo.jpg',
-            'path' => '',
-            'mime' => 'image/jpeg',
-            'size' => 100,
+            'filename'   => 'foo.jpg',
+            'path'       => '',
+            'mime'       => 'image/jpeg',
+            'size'       => 100,
             'visibility' => 'public',
         ]));
     }

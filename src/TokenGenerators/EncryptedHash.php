@@ -15,7 +15,6 @@ class EncryptedHash implements TokenGenerator
      */
     private $hasher;
 
-
     public function __construct(Guard $guard, BcryptHasher $hasher)
     {
         $this->guard = $guard;

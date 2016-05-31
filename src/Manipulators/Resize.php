@@ -1,4 +1,5 @@
 <?php namespace Znck\Attach\Manipulators;
+
 use Intervention\Image\ImageManager;
 use Znck\Attach\AbstractManipulation;
 use Znck\Attach\Contracts\Media;
@@ -34,7 +35,7 @@ class Resize extends AbstractManipulation
 
     public function apply(Media $media)
     {
-        if (!$this->isImage($media->mime)) {
+        if (! $this->isImage($media->mime)) {
             return;
         }
         $this->image = $this->manager->make($media->getContent());
