@@ -9,9 +9,9 @@ class Collection extends EloquentCollection
     
     private $model;
 
-    public function __construct($collection_name, Media $model)
+    public function __construct($collection_name, Media $model, $items = [])
     {
-        parent::__construct();
+        parent::__construct($items);
         $this->model = $model;
         if ($collection_name) {
             $this->setCollectionAccessor($collection_name);

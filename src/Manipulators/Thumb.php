@@ -33,14 +33,12 @@ class Thumb extends AbstractManipulation
     
     public function apply(Media $media)
     {
-        switch ($media->getType()) {
-            case Media::TYPE_IMAGE: return $this->image($media);
-            case Media::TYPE_PDF: return $this->pdf();
-            default: return $this->any();
+        if ($this->isImage($media->mime)) {
+            $this->thumbnailForImage($media);
         }
     }
 
-    public function image(Media $media)
+    public function thumbnailForImage(Media $media)
     {
         $image = $this->intervention()->make($media->getContent());
         $image->interlace();

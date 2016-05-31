@@ -2,10 +2,17 @@
 
 use GrahamCampbell\TestBench\AbstractPackageTestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Znck\Attach\Providers\AttachServiceProvider;
 
 class TestCase extends AbstractPackageTestCase
 {
     use DatabaseMigrations;
+
+    protected function getEnvironmentSetUp($app) {
+        parent::getEnvironmentSetUp($app);
+
+        $app->config->set('queue.default', 'sync');
+    }
 
     public function runDatabaseMigrations()
     {
@@ -14,5 +21,10 @@ class TestCase extends AbstractPackageTestCase
         $this->beforeApplicationDestroyed(function () {
             $this->artisan('migrate:rollback');
         });
+    }
+
+    public function getServiceProviderClass($app)
+    {
+        return AttachServiceProvider::class;
     }
 }

@@ -10,7 +10,28 @@ abstract class AbstractManipulation implements Manipulation
      */
     protected $attributes = [];
 
-    public function setAttributes(array $attributes) : self
+    protected $imageMimeTypes =  [
+        'bmp' => 'image/bmp',
+        'gif' => 'image/gif',
+        'jpeg' => ['image/jpeg', 'image/pjpeg'],
+        'jpg' => ['image/jpeg', 'image/pjpeg'],
+        'jpe' => ['image/jpeg', 'image/pjpeg'],
+        'png' => 'image/png',
+        'tiff' => 'image/tiff',
+        'tif' => 'image/tiff',
+    ];
+
+    public function isImage(string $mime) {
+        foreach ($this->imageMimeTypes as $mimes) {
+            if (in_array($mime, (array)$mimes)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function setAttributes(array $attributes) : Manipulation
     {
         $this->attributes = $attributes;
         

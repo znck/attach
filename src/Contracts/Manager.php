@@ -5,10 +5,19 @@ use Znck\Attach\Collection;
 interface Manager
 {
     public function available() : array;
-    
+
+    /**
+     * @return array
+     */
     public function applied() : array;
 
-    public function add(string $name, array $attributes = []) : self;
+    /**
+     * @param string $name
+     * @param array $attributes
+     *
+     * @return Manager
+     */
+    public function add(string $name, array $attributes = []) : Manager;
 
 
     /**

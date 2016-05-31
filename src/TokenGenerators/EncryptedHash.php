@@ -24,11 +24,11 @@ class EncryptedHash implements TokenGenerator
 
     public function make(string $id)
     {
-        return $this->hasher->make($this->guard->id().$id);
+        return base64_encode($this->hasher->make($this->guard->id().$id));
     }
 
     public function verify(string $hash, string $id)
     {
-        return $this->hasher->check($this->guard->id().$id, $hash);
+        return $this->hasher->check($this->guard->id().$id, base64_decode($hash));
     }
 }

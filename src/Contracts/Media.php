@@ -1,7 +1,6 @@
 <?php namespace Znck\Attach\Contracts;
 
 use Znck\Attach\Collection;
-use Znck\Attach\File\File;
 
 /**
  * @property string $mime
@@ -19,46 +18,35 @@ use Znck\Attach\File\File;
  */
 interface Media
 {
-    const TYPE_OTHER = -1;
-    const TYPE_IMAGE = 1;
-    const TYPE_PDF = 2;
-
     const VISIBILITY_PRIVATE = 'private';
     const VISIBILITY_PUBLIC = 'public';
     const VISIBILITY_SHARED = 'shared';
 
     /**
-     * Type of file.
+     * Get URI for media attachment or its manipulation.
      *
-     * @return int
-     */
-    public function getType() : int;
-
-    /**
-     * URI for the media asset.
-     *
-     * @param null|string $manipulation
-     *
+     * @param string|null $manipulation Name of the manipulation.
      * @return string
      */
     public function getUri(string $manipulation = null): string;
 
     /**
-     * Instance of original media.
+     * Get content from media attachment file.
      *
      * @return string
      */
     public function getContent();
 
     /**
-     * Instance of original media.
+     * Store a media attachment file on disk.
      *
-     * @param mixed $file
+     * @param string|resource $file Content of the media attachment file.
+     * @return void
      */
     public function setContent($file);
 
     /**
-     * Generate http headers.
+     * Get HTTP headers for media attachment.
      *
      * @return array
      */
@@ -72,69 +60,72 @@ interface Media
     public function getSecureToken(): string;
 
     /**
-     * Get media visibility public, private or shared.
+     * Parameter name used for creating URI for the media attachment.
+     *
+     * @return string
+     */
+    public function getSecureTokenKey() : string;
+
+    /**
+     * Get visibility of the media attachment.
      *
      * @return string
      */
     public function getVisibility(): string;
 
     /**
-     * Set media visibility.
+     * Set visibility of the media attachment.
      *
      * @param string $visibility
-     *
-     * @return Media
+     * @return void
      */
     public function setVisibility(string $visibility);
 
     /**
-     * Get collection this image belongs to.
+     * Get all media attachments of the collection of this media attachment.
      *
      * @return Collection
      */
     public function getCollection(): Collection;
 
     /**
-     * Available file manipulations.
+     * List of available manipulations.
      *
      * @return array
      */
     public function availableManipulations(): array;
 
     /**
-     * Verify secure hash.
+     * Verify if security token is valid for the media.
      *
      * @param string $hash
-     *
      * @return bool
      */
     public function verifySecureToken(string $hash): bool;
 
     /**
-     * @param string $name
-     * @param mixed $file
-     * @param string $mime
+     * Store a manipulated version of media attachment on disk.
      *
+     * @param string $name Name of manipulation.
+     * @param string|resource $file Content of manipulated media attachment file.
+     * @param string $mime Mime type string for the manipulated media attachment.
      * @return bool
      */
     public function setManipulation(string $name, $file, $mime) : bool;
 
     /**
-     * @param string $name
+     * Get HTTP header for manipulated media attachment.
      *
+     * @param string $name Name ot the manipulation.
      * @return array
      */
     public function getManipulationHeader(string $name) : array ;
 
     /**
-     * @param string $name
+     * Get content from manipulated media attachment file.
      *
+     * @param string $name Name of the manipulation.
      * @return string
      */
     public function getManipulationContent(string $name);
-
-    /**
-     * @return string
-     */
-    public function getSecureTokenKey() : string;
 }

@@ -9,6 +9,7 @@ use InvalidArgumentException;
 use Znck\Attach\Contracts\Manipulation;
 use Znck\Attach\Contracts\Media;
 use Znck\Attach\Exceptions\ManipulationFailedException;
+use Znck\Attach\Exceptions\ManipulationNotFoundException;
 
 class Manager implements Contracts\Manager
 {
@@ -16,7 +17,7 @@ class Manager implements Contracts\Manager
     /**
      * @var \Illuminate\Contracts\Queue\Queue
      */
-    protected $queue;
+    protected $jobs;
 
     /**
      * @var Manipulation[]
@@ -36,16 +37,12 @@ class Manager implements Contracts\Manager
     public function __construct(Container $container)
     {
         $this->container = $container;
-        $this->queue = $this->container->make('queue');
+        $this->jobs = $this->container->make('queue');
     }
 
     public function available() : array
     {
-        $glob = glob(__DIR__.'/Manipulators/*.php');
-
-        if ($glob === false) {
-            return [];
-        }
+        $glob = glob(__DIR__.'/Manipulators/*.php') ?: [];
 
         return array_map(function ($file) {
             return explode('.', basename($file), 2)[0];
@@ -55,8 +52,15 @@ class Manager implements Contracts\Manager
     public function applied() : array
     {
         return array_map(function ($item) {
-            return get_class($item);
+            return class_basename($item);
         }, $this->manipulators);
+    }
+
+    public function add(string $name, array $attributes = []) : Contracts\Manager
+    {
+        $this->manipulators[] = $this->getManipulator($name)->setAttributes($attributes);
+
+        return $this;
     }
 
     /**
@@ -66,34 +70,44 @@ class Manager implements Contracts\Manager
      */
     protected function getManipulator(string $name)
     {
-        return $this->container->make('\\Znck\\Attach\\Manipulations\\'.Str::studly($name));
-    }
+        $manipulator = null;
 
-    public function handle()
-    {
-        if ($this->media instanceof Collection) {
-            $this->media->each([$this, 'runManipulations']);
-        } elseif ($this->media instanceof Media) {
-            $this->runManipulations($this->media);
-        } else {
-            throw new InvalidArgumentException();
+        if (in_array($name, $this->available())) {
+            $manipulator = $this->container->make('\\Znck\\Attach\\Manipulators\\'.Str::studly($name));
+        } elseif (class_exists($name) or $this->container->resolved($name)) {
+            $manipulator = $this->container->make($name);
         }
-    }
 
-    public function add(string $name, array $attributes = []) : self
-    {
-        $this->manipulators[] = $this->getManipulator($name)->setAttributes($attributes);
+        if (! $manipulator instanceof Manipulation) {
+            throw new ManipulationNotFoundException;
+        }
+
+        return $manipulator;
     }
 
     public function run($media)
     {
+        $this->media = $media;
         $this->handle();
     }
 
     public function runOnQueue($media)
     {
         $this->media = $media;
-        $this->queue->push($this);
+        $this->jobs->push($this);
+    }
+
+    public function handle()
+    {
+        if ($this->media instanceof Collection) {
+            $this->media->each(function (Media $media) {
+                $this->runManipulations($media);
+            });
+        } elseif ($this->media instanceof Media) {
+            $this->runManipulations($this->media);
+        } else {
+            throw new InvalidArgumentException();
+        }
     }
 
     /**
@@ -108,8 +122,6 @@ class Manager implements Contracts\Manager
         foreach ($this->manipulators as $manipulation) {
             try {
                 $manipulation->apply($media);
-            } catch (\Exception $e) {
-                $failed[] = $manipulation;
             } catch (\Throwable $e) {
                 $failed[] = $manipulation;
             }

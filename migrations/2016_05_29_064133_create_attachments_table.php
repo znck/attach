@@ -17,7 +17,7 @@ class CreateAttachmentsTable extends Migration
             $table->string('title')->nullable();
             $table->string('filename')->nullable();
             $table->string('collection')->nullable();
-            $table->string('disk');
+            $table->string('disk')->nullable();
             $table->string('path');
             $table->string('mime');
             $table->string('visibility');
