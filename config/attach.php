@@ -6,7 +6,7 @@
     |
     | Here you may define route name and parameters required to generate URL.
     | Parameters any field available on `model` object.
-    |  
+    |
     */
     'uri' => [
         'generator'  => \Znck\Attach\UriGenerator::class,
@@ -26,7 +26,7 @@
      |
      */
     'token' => [
-        'generator' => \Znck\Attach\TokenGenerators\EncryptedHash::class
+        'generator' => \Znck\Attach\TokenGenerators\EncryptedHash::class,
     ],
 
     /*

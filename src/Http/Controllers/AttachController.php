@@ -50,7 +50,7 @@ class AttachController extends Controller
     {
         $media = $uploader->upload(
             $request->file('file'),
-            $request->only(['properties', 'collection', 'title', 'filename', ])
+            $request->only(['properties', 'collection', 'title', 'filename'])
         );
 
         return response(null, 201, ['Location', $media->getUri()]);

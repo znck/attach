@@ -13,12 +13,11 @@ interface Manager
 
     /**
      * @param string $name
-     * @param array $attributes
+     * @param array  $attributes
      *
      * @return Manager
      */
     public function add(string $name, array $attributes = []) : Manager;
-
 
     /**
      * @param Media|Collection $media

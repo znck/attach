@@ -38,9 +38,9 @@ class UriGenerator implements Contracts\UriGenerator
     }
 
     /**
-     * @param Media $media
-     *
+     * @param Media  $media
      * @param string $manipulation
+     *
      * @return mixed
      */
     private function getMediaParameters(Media $media, string $manipulation = null)

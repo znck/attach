@@ -30,7 +30,7 @@ class Thumb extends AbstractManipulation
     {
         return $this->ratio ?? 1;
     }
-    
+
     public function apply(Media $media)
     {
         if ($this->isImage($media->mime)) {

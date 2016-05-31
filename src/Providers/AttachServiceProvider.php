@@ -14,7 +14,7 @@ class AttachServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        $this->publishes([$this->configPath => config_path('cities.php'), ]);
+        $this->publishes([$this->configPath => config_path('cities.php')]);
     }
 
     /**

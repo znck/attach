@@ -2,5 +2,4 @@
 
 class ThrowableException extends \Exception implements \Throwable
 {
-
 }

@@ -1,17 +1,18 @@
 <?php namespace Znck\Attach;
 
-use Znck\Attach\Contracts\TokenGenerator;
 use Znck\Attach\Contracts\Media;
+use Znck\Attach\Contracts\TokenGenerator;
 use Znck\Attach\Contracts\UriGenerator;
 use Znck\Attach\Exceptions\FilesystemException;
 use Znck\Attach\Exceptions\ManipulationNotFoundException;
 
-trait MediaTrait #extends \Illuminate\Database\Eloquent\Model implements Contracts\Media
+trait MediaTrait //extends \Illuminate\Database\Eloquent\Model implements Contracts\Media
 {
     /**
      * Get URI for media attachment or its manipulation.
      *
      * @param string|null $manipulation Name of the manipulation.
+     *
      * @return string
      */
     public function getUri(string $manipulation = null): string
@@ -85,11 +86,11 @@ trait MediaTrait #extends \Illuminate\Database\Eloquent\Model implements Contrac
         return $this->attributes['visibility'];
     }
 
-
     /**
      * Set visibility of the media attachment.
      *
      * @param string $visibility
+     *
      * @return void
      */
     public function setVisibility(string $visibility)
@@ -121,6 +122,7 @@ trait MediaTrait #extends \Illuminate\Database\Eloquent\Model implements Contrac
      * Verify if security token is valid for the media.
      *
      * @param string $hash
+     *
      * @return bool
      */
     public function verifySecureToken(string $hash): bool
@@ -131,9 +133,9 @@ trait MediaTrait #extends \Illuminate\Database\Eloquent\Model implements Contrac
     /**
      * Store a manipulated version of media attachment on disk.
      *
-     * @param string $name Name of manipulation.
+     * @param string          $name Name of manipulation.
      * @param string|resource $file Content of manipulated media attachment file.
-     * @param string $mime Mime type string for the manipulated media attachment.
+     * @param string          $mime Mime type string for the manipulated media attachment.
      *
      * @throws FilesystemException
      *
@@ -177,7 +179,7 @@ trait MediaTrait #extends \Illuminate\Database\Eloquent\Model implements Contrac
      * @param string $name Name of the manipulation.
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     * 
+     *
      * @return string
      */
     public function getManipulationContent(string $name)
@@ -189,6 +191,7 @@ trait MediaTrait #extends \Illuminate\Database\Eloquent\Model implements Contrac
      * Check valid visibility type and add it to attributes.
      *
      * @param string $visibility
+     *
      * @return void
      */
     protected function setVisibilityAttribute(string $visibility)
@@ -204,6 +207,7 @@ trait MediaTrait #extends \Illuminate\Database\Eloquent\Model implements Contrac
      * Update `path` attribute and move files after attributes are written in database.
      *
      * @param string $value Path to store the media attachment.
+     *
      * @return void
      */
     public function setPathAttribute($value)
@@ -211,7 +215,7 @@ trait MediaTrait #extends \Illuminate\Database\Eloquent\Model implements Contrac
         $old = array_get($this->attributes, 'path');
 
         if ($old and $this->getFilesystem()->exists($old)) {
-            $this->saved(function () use($old, $value) {
+            $this->saved(function () use ($old, $value) {
                 $this->moveAll($old, $value);
             });
         }
@@ -249,12 +253,12 @@ trait MediaTrait #extends \Illuminate\Database\Eloquent\Model implements Contrac
         return app(UriGenerator::class);
     }
 
-
     /**
      * Get path for manipulation by name.
      *
      * @param null|string $manipulation Name of manipulation.
-     * @param null|string $path If provided, use this path for computing manipulation path.
+     * @param null|string $path         If provided, use this path for computing manipulation path.
+     *
      * @return string
      */
     protected function getPath($manipulation = null, $path = null)
@@ -267,6 +271,7 @@ trait MediaTrait #extends \Illuminate\Database\Eloquent\Model implements Contrac
 
             return $directory.DIRECTORY_SEPARATOR.$filename.'-'.$manipulation.$extension;
         }
+
         return $path;
     }
 
@@ -274,7 +279,8 @@ trait MediaTrait #extends \Illuminate\Database\Eloquent\Model implements Contrac
      * Prepare HTTP response headers for serving the file.
      *
      * @param null|string $mime Mime type string.
-     * @param null|int $size File size in bytes.
+     * @param null|int    $size File size in bytes.
+     *
      * @return array
      */
     protected function prepareHeadersWith($mime = null, $size = null)
@@ -283,16 +289,17 @@ trait MediaTrait #extends \Illuminate\Database\Eloquent\Model implements Contrac
             'Content-Length' => $size ?? $this->size,
             'Content-Type'   => $mime ?? $this->mime,
         ]
-        + ($this->getVisibility() === Media::VISIBILITY_PUBLIC ? []: ['private']);
+        + ($this->getVisibility() === Media::VISIBILITY_PUBLIC ? [] : ['private']);
     }
 
     /**
-     * Store content on disk
+     * Store content on disk.
      *
-     * @param string $path
+     * @param string          $path
      * @param string|resource $file
      *
      * @throws FilesystemException
+     *
      * @return void
      */
     protected function putContent($path, $file)
@@ -307,6 +314,7 @@ trait MediaTrait #extends \Illuminate\Database\Eloquent\Model implements Contrac
      *
      * @param string $old from path
      * @param string $new to path
+     *
      * @return void
      */
     protected function moveAll($old, $new)
