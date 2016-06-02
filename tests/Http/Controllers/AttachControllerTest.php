@@ -12,7 +12,8 @@ class AttachControllerTest extends TestCase
 {
     use MakesHttpRequests;
 
-    public function test_get() {
+    public function test_get()
+    {
         $this->app['router']->get('/{filename}/{manipulation?}', ['as' => 'media', 'uses' => AttachController::class.'@get']);
 
         $uploader = new DefaultUploader();
