@@ -3,16 +3,16 @@
 use Znck\Attach\Collection;
 
 /**
- * @property string $mime
- * @property array $manipulations
- * @property array $properties
+ * @property string      $mime
+ * @property array       $manipulations
+ * @property array       $properties
  * @property string|null $collection Collection or group image belongs to.
- * @property string|null $title User provided name for image.
- * @property string|null $filename Original filename of uploaded file.
- * @property string $disk Files are on this disk.
- * @property string $path Absolute file path on disk.
- * @property int $size Size in bytes.
- * @property int $order Position in collection.
+ * @property string|null $title      User provided name for image.
+ * @property string|null $filename   Original filename of uploaded file.
+ * @property string      $disk       Files are on this disk.
+ * @property string      $path       Absolute file path on disk.
+ * @property int         $size       Size in bytes.
+ * @property int         $order      Position in collection.
  *
  * @method array toArray()
  */
@@ -39,6 +39,13 @@ interface Media
     public function getContent();
 
     /**
+     * Get content stream for media attachment file.
+     *
+     * @return string
+     */
+    public function getStream();
+
+    /**
      * Store a media attachment file on disk.
      *
      * @param string|resource $file Content of the media attachment file.
@@ -55,18 +62,30 @@ interface Media
     public function getHttpHeaders(): array;
 
     /**
-     * Secure hash to verify file access authenticity without logging in.
-     *
-     * @return string
-     */
-    public function getSecureToken(): string;
-
-    /**
      * Parameter name used for creating URI for the media attachment.
      *
      * @return string
      */
     public function getSecureTokenKey() : string;
+
+    /**
+     * URL signing token for the media.
+     *
+     * @param null|int $expires Validity of the token.
+     *
+     * @return string
+     */
+    public function getSecureToken($expires = null) : string;
+
+    /**
+     * Verify signing token for the media.
+     *
+     * @param string   $token
+     * @param null|int $expires
+     *
+     * @return bool
+     */
+    public function verifySecureToken($token, $expires = null) : bool;
 
     /**
      * Get visibility of the media attachment.
@@ -99,15 +118,6 @@ interface Media
     public function availableManipulations(): array;
 
     /**
-     * Verify if security token is valid for the media.
-     *
-     * @param string $hash
-     *
-     * @return bool
-     */
-    public function verifySecureToken(string $hash): bool;
-
-    /**
      * Store a manipulated version of media attachment on disk.
      *
      * @param string          $name Name of manipulation.
@@ -135,4 +145,13 @@ interface Media
      * @return string
      */
     public function getManipulationContent(string $name);
+
+    /**
+     * Get content stream for manipulated media attachment file.
+     *
+     * @param string $name Name of the manipulation.
+     *
+     * @return string
+     */
+    public function getManipulationStream(string $name);
 }

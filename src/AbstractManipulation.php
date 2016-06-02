@@ -41,7 +41,7 @@ abstract class AbstractManipulation implements Manipulation
 
     public function getName() : string
     {
-        return Str::lower(static::class);
+        return Str::lower(array_last(explode('\\', static::class)));
     }
 
     public function __get($name)

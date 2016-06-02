@@ -26,7 +26,7 @@
      |
      */
     'token' => [
-        'generator' => \Znck\Attach\TokenGenerators\EncryptedHash::class,
+        'generator' => \Znck\Attach\UriSigners\EncryptedHash::class,
     ],
 
     /*

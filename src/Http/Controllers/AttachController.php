@@ -1,8 +1,10 @@
 <?php namespace Znck\Attach\Http\Controllers;
 
+use Exception;
 use Illuminate\Container\Container;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Throwable;
 use Znck\Attach\Uploaders\DefaultUploader;
 
 class AttachController extends Controller
@@ -12,8 +14,7 @@ class AttachController extends Controller
      */
     private $app;
 
-    public function __construct(Container $app)
-    {
+    public function __construct(Container $app) {
         $this->app = $app;
     }
 
@@ -22,32 +23,41 @@ class AttachController extends Controller
      *
      * @return \Znck\Attach\Contracts\Media
      */
-    protected function getMediaById(string $id)
-    {
+    protected function getMediaById(string $id) {
         return $this->app->make(config('attach.model'))->findOrFail($id);
     }
 
-    public function get(Request $request, $filename, $manipulation = null)
-    {
+    public function get(Request $request, $filename, $manipulation = null) {
         $media = $this->getMediaById($filename);
 
-        if (! $media->verifySecureToken($request->input($media->getSecureTokenKey()))) {
+        try {
+            if (!$media->verifySecureToken($request->input($media->getSecureTokenKey()), $request->input('expires'))) {
+                throw new Exception;
+            }
+        } catch (Throwable $e) {
             abort(401);
         }
 
         if ($manipulation) {
-            return response(
-                $media->getManipulationContent($manipulation),
+            return response()->stream(
+                function () use ($media, $manipulation) {
+                    echo file_get_contents($media->getManipulationStream($manipulation));
+                },
                 200,
                 $media->getManipulationHeader($manipulation)
             );
         }
 
-        return response($media->getContent(), 200, $media->getHttpHeaders());
+        return response()->stream(
+            function () use ($media) {
+                file_get_contents($media->getStream());
+            },
+            200,
+            $media->getHttpHeaders()
+        );
     }
 
-    public function upload(DefaultUploader $uploader, Request $request)
-    {
+    public function upload(DefaultUploader $uploader, Request $request) {
         $media = $uploader->upload(
             $request->file('file'),
             $request->only(['properties', 'collection', 'title', 'filename'])
@@ -56,14 +66,17 @@ class AttachController extends Controller
         return response(null, 201, ['Location', $media->getUri()]);
     }
 
-    public function download(Request $request, $filename)
-    {
+    public function download(Request $request, $filename) {
         $media = $this->getMediaById($filename);
 
-        if (! $media->verifySecureToken($request->input($media->getSecureTokenKey()))) {
+        if (!$media->verifySecureToken($request->input($media->getSecureTokenKey()))) {
             abort(401);
         }
 
-        return response($media->getContent(), 200, $media->getHttpHeaders() + ['Content-Disposition' => 'attachment; filename="'.$media->filename.'"']);
+        return response(
+            $media->getStream(),
+            200,
+            $media->getHttpHeaders() + ['Content-Disposition' => 'attachment; filename="'.$media->filename.'"']
+        );
     }
 }

@@ -35,10 +35,10 @@ class Resize extends AbstractManipulation
 
     public function apply(Media $media)
     {
-        if (! $this->isImage($media->mime)) {
-            return;
-        }
+        if (! $this->isImage($media->mime)) { return; }
+        
         $this->image = $this->manager->make($media->getContent());
+        
         $this->image->interlace();
         $this->image->resize($this->getWidth(), $this->getHeight(), $this->getConstraints());
         $media->setManipulation($this->getName(), $this->image->encode(), $this->image->mime());
