@@ -207,16 +207,9 @@ class ManagerTest extends TestCase
 
     public function test_run_on_queue()
     {
-        $queue = $this->getMockBuilder(Queue::class)
-            ->setMethods(['push'])
-            ->getMockForAbstractClass();
-        $this->app->instance('queue', $queue);
         $manager = new Manager($this->app);
 
-        $queue->expects($this->once())
-            ->method('push')
-            ->with($manager)
-            ->willReturn(true);
+        $this->expectsJobs(get_class($manager));
 
         $manager->runOnQueue(Attachment::create([
             'filename'   => 'foo.jpg',

@@ -32,6 +32,6 @@ class AttachControllerTest extends TestCase
 
         $this->expectException(HttpException::class);
         $this->get(explode('?', $media->getUri('thumb'))[0])
-            ->seeStatusCode(401);
+             ->seeStatusCode(401);
     }
 }

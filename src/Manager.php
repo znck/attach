@@ -2,6 +2,7 @@
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Container\Container;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Str;
@@ -13,11 +14,7 @@ use Znck\Attach\Exceptions\ManipulationNotFoundException;
 
 class Manager implements Contracts\Manager
 {
-    use Queueable, SerializesModels, InteractsWithQueue;
-    /**
-     * @var \Illuminate\Contracts\Queue\Queue
-     */
-    protected $jobs;
+    use Queueable, SerializesModels, InteractsWithQueue, DispatchesJobs;
 
     /**
      * @var Manipulation[]
@@ -37,7 +34,6 @@ class Manager implements Contracts\Manager
     public function __construct(Container $container)
     {
         $this->container = $container;
-        $this->jobs = $this->container->make('queue');
     }
 
     public function available() : array
@@ -94,7 +90,7 @@ class Manager implements Contracts\Manager
     public function runOnQueue($media)
     {
         $this->media = $media;
-        $this->jobs->push($this);
+        $this->dispatch($this);
     }
 
     public function handle()
