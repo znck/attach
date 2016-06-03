@@ -1,7 +1,6 @@
 <?php namespace Test\Znck\Attach;
 
 use Exception;
-use Illuminate\Contracts\Queue\Queue;
 use InvalidArgumentException;
 use Znck\Attach\Attachment;
 use Znck\Attach\Contracts\Manipulation;

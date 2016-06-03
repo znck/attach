@@ -13,7 +13,7 @@ class EncryptedHash implements UriSigner
      * @var Guard
      */
     protected $guard;
-    
+
     /**
      * @var BcryptHasher
      */
@@ -32,12 +32,12 @@ class EncryptedHash implements UriSigner
 
     public function verify(string $hash, string $id, $expires)
     {
-        if (!$hash or !$this->hasher->check($this->guard->id().$id.$expires, base64_decode(urldecode($hash)))) {
-            throw new TokenInvalid;
+        if (! $hash or ! $this->hasher->check($this->guard->id().$id.$expires, base64_decode(urldecode($hash)))) {
+            throw new TokenInvalid();
         }
 
         if ($expires and Carbon::createFromTimestamp($expires)->lt(Carbon::now())) {
-            throw new TokenExpired;
+            throw new TokenExpired();
         }
 
         return true;

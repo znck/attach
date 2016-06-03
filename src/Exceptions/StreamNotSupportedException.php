@@ -4,5 +4,4 @@ use Exception;
 
 class StreamNotSupportedException extends Exception
 {
-
 }
