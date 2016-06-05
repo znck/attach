@@ -3,8 +3,8 @@
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Znck\Attach\Contracts\Manager as ManagerInterface;
-use Znck\Attach\Contracts\UriSigner as TokenGeneratorInterface;
 use Znck\Attach\Contracts\UriGenerator as UriGeneratorInterface;
+use Znck\Attach\Contracts\UriSigner as TokenGeneratorInterface;
 use Znck\Attach\Http\Controllers\AttachController;
 use Znck\Attach\UriGenerator;
 

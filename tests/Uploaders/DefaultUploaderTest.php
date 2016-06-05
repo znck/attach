@@ -8,14 +8,14 @@ use Znck\Attach\Uploaders\DefaultUploader;
 
 class DefaultUploaderTest extends TestCase
 {
-
-    public function test_upload() {
+    public function test_upload()
+    {
         $uploader = new DefaultUploader();
-        
+
         $file = new UploadedFile(__DIR__.DIRECTORY_SEPARATOR.'uploaded.txt', 'uploaded.txt');
 
         /**
-         * @var Attachment $media
+         * @var Attachment
          */
         $media = $uploader->upload($file);
         $this->assertTrue($media->exists);

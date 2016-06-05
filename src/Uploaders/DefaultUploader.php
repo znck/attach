@@ -17,7 +17,8 @@ class DefaultUploader implements Uploader
      */
     protected $container;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->container = Container::getInstance();
         $this->manager = $this->container->make(Manager::class);
     }
@@ -25,7 +26,8 @@ class DefaultUploader implements Uploader
     /**
      * @return Manager
      */
-    public function getManager() {
+    public function getManager()
+    {
         return $this->manager;
     }
 
@@ -35,15 +37,16 @@ class DefaultUploader implements Uploader
      *
      * @return \Illuminate\Database\Eloquent\Model|void|Media
      */
-    public function upload($file, array $attributes = []) {
+    public function upload($file, array $attributes = [])
+    {
         $media = $this->makeModel(
             $attributes + [
-                'mime' => $file->getMimeType(),
-                'filename' => $file->getClientOriginalName(),
-                'size' => $file->getSize(),
+                'mime'       => $file->getMimeType(),
+                'filename'   => $file->getClientOriginalName(),
+                'size'       => $file->getSize(),
                 'visibility' => Media::VISIBILITY_PRIVATE,
-                'path' => time().'-'.str_random(6).'.'.pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION),
-                'disk' => null,
+                'path'       => time().'-'.str_random(6).'.'.pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION),
+                'disk'       => null,
             ]
         );
 
@@ -61,7 +64,8 @@ class DefaultUploader implements Uploader
      *
      * @return Media|\Illuminate\Database\Eloquent\Model
      */
-    protected function makeModel(array $attributes) {
+    protected function makeModel(array $attributes)
+    {
         return $this->container->make(config('attach.model'), [$attributes]);
     }
 }
