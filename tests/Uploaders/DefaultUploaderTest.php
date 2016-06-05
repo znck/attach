@@ -14,7 +14,7 @@ class DefaultUploaderTest extends TestCase
 
         $file = new UploadedFile(__DIR__.DIRECTORY_SEPARATOR.'uploaded.txt', 'uploaded.txt');
 
-        /**
+        /*
          * @var Attachment
          */
         $media = $uploader->upload($file);
