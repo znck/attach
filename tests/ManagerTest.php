@@ -1,13 +1,12 @@
 <?php namespace Test\Znck\Attach;
 
 use Exception;
-use Illuminate\Contracts\Queue\Queue;
 use InvalidArgumentException;
 use Znck\Attach\Attachment;
 use Znck\Attach\Contracts\Manipulation;
+use Znck\Attach\Downloader;
 use Znck\Attach\Exceptions\ManipulationFailedException;
 use Znck\Attach\Exceptions\ManipulationNotFoundException;
-use Znck\Attach\Downloader;
 
 class ManagerTest extends TestCase
 {

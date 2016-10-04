@@ -16,9 +16,10 @@ class EncryptedHashTest extends TestCase
      */
     protected $media;
 
-    public function test_all() {
+    public function test_all()
+    {
         $signer = $this->prepareForTests();
-        
+
         $token = $signer->sign($this->media->getKey());
         $this->assertTrue($signer->verify($token, $this->media->getKey(), null));
 
@@ -27,12 +28,11 @@ class EncryptedHashTest extends TestCase
         $this->assertTrue($signer->verify($token, $this->media->getKey(), $expires));
     }
 
-
-
     /**
      * @return EncryptedHash
      */
-    private function prepareForTests() {
+    private function prepareForTests()
+    {
         /** @var Guard $user */
         $user = $this->getMockBuilder(Guard::class)
             ->setMethods(['id'])
@@ -42,10 +42,10 @@ class EncryptedHashTest extends TestCase
 
         $this->media = Attachment::create(
             [
-                'filename' => 'foo.jpg',
-                'path' => '',
-                'mime' => 'image/jpeg',
-                'size' => 100,
+                'filename'   => 'foo.jpg',
+                'path'       => '',
+                'mime'       => 'image/jpeg',
+                'size'       => 100,
                 'visibility' => 'public',
             ]
         );
@@ -53,7 +53,8 @@ class EncryptedHashTest extends TestCase
         return $signer;
     }
 
-    public function test_expired() {
+    public function test_expired()
+    {
         $signer = $this->prepareForTests();
 
         $expires = Carbon::now()->addDays(-2)->timestamp;
@@ -62,7 +63,8 @@ class EncryptedHashTest extends TestCase
         $signer->verify($token, $this->media->getKey(), $expires);
     }
 
-    public function test_invalid() {
+    public function test_invalid()
+    {
         $signer = $this->prepareForTests();
 
         $token = $signer->sign(0);
@@ -70,11 +72,11 @@ class EncryptedHashTest extends TestCase
         $signer->verify($token, $this->media->getKey(), null);
     }
 
-    public function test_malformed() {
+    public function test_malformed()
+    {
         $signer = $this->prepareForTests();
 
         $this->expectException(TokenInvalid::class);
         $signer->verify(base64_encode('foo'), $this->media->getKey(), null);
     }
-
 }

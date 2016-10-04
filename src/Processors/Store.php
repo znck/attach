@@ -7,15 +7,18 @@ class Store extends AbstractProcessor
 {
     protected $file;
 
-    public function __construct(UploadedFile $file) {
+    public function __construct(UploadedFile $file)
+    {
         $this->file = $file;
     }
 
-    protected function apply(Attachment $attachment) {
+    protected function apply(Attachment $attachment)
+    {
         $this->getFinder()->put($attachment->path, $this->file, $attachment->visibility);
     }
 
-    protected function attach(Attachment $attachment) {
+    protected function attach(Attachment $attachment)
+    {
         // -- Nothing Here! --
     }
 }
