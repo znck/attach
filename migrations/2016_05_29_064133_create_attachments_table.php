@@ -13,18 +13,17 @@ class CreateAttachmentsTable extends Migration
     public function up()
     {
         Schema::create('attachments', function (Blueprint $table) {
-            $table->increments('id');
+            $table->uuid('id');
             $table->string('title')->nullable();
-            $table->string('filename')->nullable();
-            $table->string('collection')->nullable();
             $table->string('disk')->nullable();
             $table->string('path');
             $table->string('mime');
-            $table->string('visibility');
+            $table->string('filename');
+            $table->string('extension');
             $table->unsignedInteger('size');
-            $table->unsignedInteger('order')->default(0)->nullable();
-            $table->json('manipulations')->default('[]');
-            $table->json('properties')->default('[]');
+            $table->string('visibility');
+            $table->json('variations')->default('[]');
+            $table->json('additional')->nullable();
             $table->timestamps();
         });
     }

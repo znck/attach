@@ -30,6 +30,14 @@ PSRs you support to avoid any confusion with users and contributors.
   </a>
 </p>
 
+> Milestones
+> - [ ] File uploads.
+> - [ ] Attach files to eloquent models.
+> - [ ] Delete/Update files.
+> - [ ] File preview and/or thumbnail.
+> - [ ] File routing.
+> - [ ] Signed URL.
+
 ## Install
 
 Via Composer

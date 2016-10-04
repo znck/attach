@@ -1,65 +1,43 @@
 <?php return [
     /*
     |--------------------------------------------------------------------------
-    | URI Generator
+    | Attachment Model
     |--------------------------------------------------------------------------
     |
-    | Here you may define route name and parameters required to generate URL.
-    | Parameters any field available on `model` object.
+    | This option defines the attachment model.
     |
     */
-    'uri' => [
-        'generator'  => \Znck\Attach\UriGenerator::class,
-        'name'       => 'media',
-        'parameters' => [
-            'id' => 'filename', // Use `id` as `filename` in parameters.
-        ],
-        'middleware' => [],
+    'model' => 'App\Attachment',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Signed Urls
+    |--------------------------------------------------------------------------
+    |
+    | This option defines the secret key for URL signing.
+    |
+    */
+    'sign' => true,
+    'signing' => [
+        'key' => env('URL_SIGNING_KEY'),
+        'expiry' => 0, // In minutes
     ],
 
-    /*
-     |--------------------------------------------------------------------------
-     | Token Generator
-     |--------------------------------------------------------------------------
-     |
-     | It is useful in stateless application to control/limit media access.
-     |
-     */
-    'token' => [
-        'generator' => \Znck\Attach\UriSigners\EncryptedHash::class,
-    ],
 
     /*
-     |--------------------------------------------------------------------------
-     | Model Class
-     |--------------------------------------------------------------------------
-     |
-     | This is Eloquent model implementing Znck\Attach\Contacts\Media interface.
-     |
-     */
-    'model' => \Znck\Attach\Attachment::class,
-
-    /*
-     |--------------------------------------------------------------------------
-     | Manipulation Manager
-     |--------------------------------------------------------------------------
-     |
-     | Manager applies required manipulations to Media object.
-     | It is should Znck\Attach\Contacts\Manager interface.
-     |
-     */
-    'manager' => \Znck\Attach\Manager::class,
-
-    /*
-     |--------------------------------------------------------------------------
-     | Upload Location
-     |--------------------------------------------------------------------------
-     |
-     | Configure disk and path for uploading files.
-     |
-     */
-    'upload' => [
-        'disk' => null,
-        'path' => storage_path('uploads'),
+    |--------------------------------------------------------------------------
+    | Attachment Route
+    |--------------------------------------------------------------------------
+    |
+    | Attachment route can take two values.
+    |
+    |  array => create route with these values
+    |           required: _path, as, uses
+    |  string => route name
+    */
+    'route' => [
+        '_path' => '/attach/{filename}',
+        'as' => 'attach::serve',
+        'uses' => \Znck\Attach\Util\AttachController::class.'@serve',
     ],
 ];

@@ -7,24 +7,24 @@ use Znck\Attach\Attachment;
 use Znck\Attach\Contracts\Manipulation;
 use Znck\Attach\Exceptions\ManipulationFailedException;
 use Znck\Attach\Exceptions\ManipulationNotFoundException;
-use Znck\Attach\Manager;
+use Znck\Attach\Downloader;
 
 class ManagerTest extends TestCase
 {
     public function test_available()
     {
-        $manager = new Manager($this->app);
+        $manager = new Downloader($this->app);
 
         $manipulations = $manager->available();
 
         $this->assertInArray('Move', $manipulations);
         $this->assertInArray('Resize', $manipulations);
-        $this->assertCount(count(glob(__DIR__.'/../src/Manipulators/*.php')), $manipulations);
+        $this->assertCount(count(glob(__DIR__.'/../src2/Manipulators/*.php')), $manipulations);
     }
 
     public function test_applied()
     {
-        $manager = new Manager($this->app);
+        $manager = new Downloader($this->app);
 
         $this->assertTrue(is_array($manager->applied()));
         $this->assertCount(0, $manager->applied());
@@ -37,7 +37,7 @@ class ManagerTest extends TestCase
 
     public function test_add_custom()
     {
-        $manager = new Manager($this->app);
+        $manager = new Downloader($this->app);
         $manipulator = $this->getMockBuilder(Manipulation::class)->setMethods(
             ['setAttributes', 'getName', 'apply']
         )->getMockForAbstractClass();
@@ -54,14 +54,14 @@ class ManagerTest extends TestCase
 
     public function test_add_fail()
     {
-        $manager = new Manager($this->app);
+        $manager = new Downloader($this->app);
         $this->expectException(ManipulationNotFoundException::class);
         $manager->add('FooBarBarBoom');
     }
 
     public function test_run_with_collection()
     {
-        $manager = new Manager($this->app);
+        $manager = new Downloader($this->app);
         $manipulator = $this->getMockBuilder(Manipulation::class)
             ->setMethods(['setAttributes', 'apply'])
             ->getMockForAbstractClass();
@@ -99,7 +99,7 @@ class ManagerTest extends TestCase
 
     public function test_run_with_media()
     {
-        $manager = new Manager($this->app);
+        $manager = new Downloader($this->app);
         $manipulator = $this->getMockBuilder(Manipulation::class)
             ->setMethods(['setAttributes', 'apply'])
             ->getMockForAbstractClass();
@@ -130,7 +130,7 @@ class ManagerTest extends TestCase
 
     public function test_run_with_anything()
     {
-        $manager = new Manager($this->app);
+        $manager = new Downloader($this->app);
         $manipulator = $this->getMockBuilder(Manipulation::class)
             ->setMethods(['setAttributes', 'apply'])
             ->getMockForAbstractClass();
@@ -148,7 +148,7 @@ class ManagerTest extends TestCase
 
     public function test_run_with_failing_manipulator()
     {
-        $manager = new Manager($this->app);
+        $manager = new Downloader($this->app);
         $manipulator = $this->getMockBuilder(Manipulation::class)
             ->setMethods(['setAttributes', 'apply'])
             ->getMockForAbstractClass();
@@ -176,7 +176,7 @@ class ManagerTest extends TestCase
 
     public function test_run_with_failing_manipulator_check_exception()
     {
-        $manager = new Manager($this->app);
+        $manager = new Downloader($this->app);
         $manipulator = $this->getMockBuilder(Manipulation::class)
             ->setMethods(['setAttributes', 'apply'])
             ->getMockForAbstractClass();
@@ -207,7 +207,7 @@ class ManagerTest extends TestCase
 
     public function test_run_on_queue()
     {
-        $manager = new Manager($this->app);
+        $manager = new Downloader($this->app);
 
         $this->expectsJobs(get_class($manager));
 

@@ -1,12 +1,19 @@
 <?php namespace Znck\Attach\Contracts;
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\UploadedFile;
+
 interface Uploader
 {
-    /**
-     * @param \Symfony\Component\HttpFoundation\File\UploadedFile $file
-     * @param array                                               $attributes
-     *
-     * @return \Illuminate\Database\Eloquent\Model|Media
-     */
-    public function upload($file, array $attributes = []);
+    public function __construct(UploadedFile $file, Attachment $attachment);
+
+    public function upload();
+
+    public function attachTo(Model $model) : self;
+
+    public function owner(Model $model) : self;
+
+    public function getAttachment() : Attachment;
+
+    public function setStorage(Storage $storage) : self;
 }
