@@ -35,7 +35,7 @@
   "autoload": {
     "files": ["src/helpers.php"],
     "psr-4": {
-      "Znck\\Attach\\": "src2"
+      "Znck\\Attach\\": "src/"
     }
   },
   "autoload-dev": {
