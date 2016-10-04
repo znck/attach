@@ -10,7 +10,8 @@ class AttachmentObserver
      */
     protected $finder;
 
-    public function getFinder() : Finder {
+    public function getFinder() : Finder
+    {
         if (is_null($this->finder)) {
             $this->finder = app(Finder::class);
         }
@@ -18,7 +19,7 @@ class AttachmentObserver
         return $this->finder;
     }
 
-    public function deleted(Attachment $attachment) {
-
+    public function deleted(Attachment $attachment)
+    {
     }
 }
