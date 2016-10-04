@@ -4,5 +4,4 @@ use Illuminate\Contracts\Filesystem\Filesystem;
 
 interface Storage extends Filesystem
 {
-
 }
