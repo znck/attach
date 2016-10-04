@@ -18,7 +18,8 @@ abstract class AbstractProcessor implements Processor
      */
     protected $finder;
 
-    public function process(Attachment $attachment) {
+    public function process(Attachment $attachment)
+    {
         $this->attachment = $attachment;
 
         $this->attach($attachment);
@@ -38,14 +39,16 @@ abstract class AbstractProcessor implements Processor
     /**
      * @return Finder
      */
-    public function getFinder(): Finder {
+    public function getFinder(): Finder
+    {
         return $this->finder;
     }
 
     /**
      * @param Storage $storage
      */
-    public function setStorage(Storage $storage) {
+    public function setStorage(Storage $storage)
+    {
         $this->finder->setStorage($storage);
     }
 }

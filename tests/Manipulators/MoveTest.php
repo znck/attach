@@ -7,8 +7,8 @@ use Znck\Attach\Uploaders\DefaultUploader;
 
 class MoveTest extends TestCase
 {
-
-    public function test_all() {
+    public function test_all()
+    {
         $uploader = new DefaultUploader();
         $media = $uploader->upload(new UploadedFile(__DIR__.DIRECTORY_SEPARATOR.'anon.jpg', 'anon.jpg'));
 
