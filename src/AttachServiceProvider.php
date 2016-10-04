@@ -12,7 +12,7 @@ use Znck\Attach\Util\Finder;
 
 class AttachServiceProvider extends ServiceProvider
 {
-    protected $configPath = __DIR__.'/../../config/attach.php';
+    protected $configPath = __DIR__.'/../config/attach.php';
 
     public function boot() {
         $this->publishes([$this->configPath => config_path('attach.php')], 'config');
