@@ -82,7 +82,17 @@ if (!function_exists('verify_url_signature')) {
 }
 
 if (!function_exists('attach_url')) {
-    function attach_url(Attachment $attachment, string $var = null, $params = [], bool $sign = null) {
+    /**
+     * @param Attachment $attachment
+     * @param string|null $var
+     * @param array $params
+     * @param bool|null $sign
+     *
+     * @return null|string
+     */
+    function attach_url($attachment, string $var = null, $params = [], bool $sign = null) {
+        if (!$attachment instanceof Attachment) return null;
+
         $route = config('attach.route');
         $sign = is_null($sign) ? config('attach.sign') : $sign;
         $name = is_string($route) ? $route : array_get($route, 'as');

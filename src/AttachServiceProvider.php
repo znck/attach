@@ -31,7 +31,7 @@ class AttachServiceProvider extends ServiceProvider
         $this->app->bind(AttachmentContract::class, $this->getConfig('model'));
         $this->app->bind(DownloaderContract::class, Downloader::class);
         $this->app->bind(FinderContract::class, Finder::class);
-        $this->app->bind(StorageContract::class, $this->app['filesystem.default']);
+        $this->app->bind(StorageContract::class, $this->app['filesystem.disk']);
         $this->app->bind(UploaderContract::class, Uploader::class);
     }
 
