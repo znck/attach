@@ -10,14 +10,25 @@ use Znck\Attach\Contracts\Storage as StorageContract;
 use Znck\Attach\Contracts\Uploader as UploaderContract;
 use Znck\Attach\Util\Finder;
 
+/**
+ * @property \Illuminate\Foundation\Application $app
+ */
 class AttachServiceProvider extends ServiceProvider
 {
+    protected static $runMigrations = true;
+
     protected $configPath = __DIR__.'/../config/attach.php';
 
     public function boot() {
-        $this->publishes([$this->configPath => config_path('attach.php')], 'config');
-        $this->publishes([__DIR__.'/../migrations/' => database_path('migrations')], 'migrations');
-        $this->loadMigrationsFrom(__DIR__.'/../migrations/');
+        $this->publishes([$this->configPath => config_path('attach.php')], 'attach-config');
+        if ($this->app->runningInConsole()) {
+            if (self::$runMigrations) {
+                $this->loadMigrationsFrom(__DIR__.'/../migrations/');
+                return;
+            }
+
+            $this->publishes([__DIR__.'/../migrations/' => database_path('migrations')], 'attach-migrations');
+        }
     }
 
     /**
