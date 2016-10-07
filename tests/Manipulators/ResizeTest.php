@@ -1,7 +1,6 @@
 <?php namespace Test\Znck\Attach\Manipulators;
 
 use Illuminate\Http\UploadedFile;
-use Intervention\Image\ImageManager;
 use Intervention\Image\ImageServiceProviderLaravel5;
 use Test\Znck\Attach\TestCase;
 use Znck\Attach\Manipulators\Resize;
@@ -9,12 +8,13 @@ use Znck\Attach\Uploaders\DefaultUploader;
 
 class ResizeTest extends TestCase
 {
-    protected function getRequiredServiceProviders($app) {
+    protected function getRequiredServiceProviders($app)
+    {
         return [ImageServiceProviderLaravel5::class];
     }
 
-
-    public function test_all() {
+    public function test_all()
+    {
         $resize = new Resize($this->app['image']);
         $resize->setAttributes([]);
         $resize->name = 'small';
