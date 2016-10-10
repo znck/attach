@@ -46,7 +46,8 @@ class Downloader implements DownloaderInterface
      */
     protected $finder;
 
-    public function parseFilename(string $filename) {
+    public function parseFilename(string $filename)
+    {
         $parts = explode('.', $filename, 3);
 
         switch (count($parts)) {
@@ -64,7 +65,8 @@ class Downloader implements DownloaderInterface
         }
     }
 
-    public function getRequestedMeta() : array {
+    public function getRequestedMeta() : array
+    {
         if ($this->isVariationRequested()) {
             return $this->getAttachmentVariationMeta($this->getVariation());
         }
@@ -72,33 +74,36 @@ class Downloader implements DownloaderInterface
         return $this->getAttachmentMeta();
     }
 
-    public function getAttachmentMeta() : array {
+    public function getAttachmentMeta() : array
+    {
         $attach = $this->attachment;
 
         return [
             'filename' => $attach->filename,
-            'mime' => $attach->mime,
-            'size' => $attach->size,
-            'title' => $attach->title,
+            'mime'     => $attach->mime,
+            'size'     => $attach->size,
+            'title'    => $attach->title,
         ];
     }
 
-    public function getAttachmentVariationMeta(string $name) : array {
+    public function getAttachmentVariationMeta(string $name) : array
+    {
         $attach = $this->attachment;
-        if (!array_key_exists($name, $attach->variations)) {
+        if (! array_key_exists($name, $attach->variations)) {
             throw new NotFoundHttpException();
         }
         $variation = $attach->variations[$name];
 
         return [
             'filename' => $attach->filename,
-            'mime' => $variation['mime'],
-            'size' => $variation['size'],
-            'title' => $attach->title,
+            'mime'     => $variation['mime'],
+            'size'     => $variation['size'],
+            'title'    => $attach->title,
         ];
     }
 
-    public function getRequestedFile() : string {
+    public function getRequestedFile() : string
+    {
         if ($this->isVariationRequested()) {
             return $this->getFinder()->getPath($this->attachment, $this->getVariation());
         }
@@ -106,7 +111,8 @@ class Downloader implements DownloaderInterface
         return $this->attachment->path;
     }
 
-    public function findAttachment(string $filename) : Attachment {
+    public function findAttachment(string $filename) : Attachment
+    {
         $this->parseFilename($filename);
 
         $model = app(Attachment::class);
@@ -123,7 +129,8 @@ class Downloader implements DownloaderInterface
      *
      * @return string
      */
-    public function getUuid() {
+    public function getUuid()
+    {
         return $this->uuid;
     }
 
@@ -132,16 +139,18 @@ class Downloader implements DownloaderInterface
      *
      * @return string
      */
-    public function getVariation() {
+    public function getVariation()
+    {
         return $this->variation;
     }
 
-
-    protected function isVariationRequested() : bool {
-        return !is_null($this->variation);
+    protected function isVariationRequested() : bool
+    {
+        return ! is_null($this->variation);
     }
 
-    public function getFinder() : Finder {
+    public function getFinder() : Finder
+    {
         if (is_null($this->finder)) {
             $this->finder = app(Finder::class);
         }
@@ -149,11 +158,13 @@ class Downloader implements DownloaderInterface
         return $this->finder;
     }
 
-    public function response(string $filename = null) : Response {
+    public function response(string $filename = null) : Response
+    {
         return $this->respond($filename);
     }
 
-    public function download(string $filename = null) : Response {
+    public function download(string $filename = null) : Response
+    {
         return $this->respond(
             $filename,
             ['Content-Disposition' => "attachment; filename=\"{$this->attachment->filename}\""]
@@ -162,13 +173,13 @@ class Downloader implements DownloaderInterface
 
     /**
      * @param string $filename
-     *
-     * @param array $headers
+     * @param array  $headers
      *
      * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
-    protected function respond(string $filename, $headers = []) : StreamedResponse {
-        if (!is_null($filename)) {
+    protected function respond(string $filename, $headers = []) : StreamedResponse
+    {
+        if (! is_null($filename)) {
             $this->findAttachment($filename);
         }
 
@@ -180,16 +191,15 @@ class Downloader implements DownloaderInterface
             function () {
                 $resource = $this->getFinder()->readStream($this->getRequestedFile());
 
-                while (!feof($resource)) {
+                while (! feof($resource)) {
                     echo fread($resource, 1024);
                 }
 
                 fclose($resource);
-
             },
             200,
             $headers + [
-                'Content-Type' => $meta['mime'],
+                'Content-Type'   => $meta['mime'],
                 'Content-Length' => $meta['size'],
             ]
         );

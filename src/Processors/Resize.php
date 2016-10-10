@@ -27,7 +27,8 @@ class Resize extends AbstractProcessor
         $this->height = $height;
     }
 
-    public function getImageManager() : ImageManager {
+    public function getImageManager() : ImageManager
+    {
         if (is_null($this->imageManager)) {
             $this->imageManager = app(ImageManager::class);
         }
@@ -35,27 +36,30 @@ class Resize extends AbstractProcessor
         return $this->imageManager;
     }
 
-    public function setImageManager(ImageManager $imageManager) {
+    public function setImageManager(ImageManager $imageManager)
+    {
         $this->imageManager = $imageManager;
     }
 
-    protected function apply(Attachment $attachment) {
+    protected function apply(Attachment $attachment)
+    {
         $storage = $this->getFinder();
-        $path = !is_null($this->name) ? $storage->getPath($attachment, $this->name) : $attachment->path;
+        $path = ! is_null($this->name) ? $storage->getPath($attachment, $this->name) : $attachment->path;
         $image = $this->getImageManager()->make($storage->get($attachment->path));
         $image->interlace()->fit($this->width, $this->width);
         $format = $this->name ? $attachment->mime : 'image/jpg';
         $storage->put($path, $image->encode($format), $attachment->visibility);
 
-        if (!is_null($this->name)) {
+        if (! is_null($this->name)) {
             $attachment->variations[$this->name]['size'] = $storage->size($path);
         } else {
             $attachment->size = $storage->size($path);
         }
     }
 
-    protected function attach(Attachment $attachment) {
-        if (!is_null($this->name)) {
+    protected function attach(Attachment $attachment)
+    {
+        if (! is_null($this->name)) {
             $attachment->variations[$this->name] = [
                 'mime' => $this->mime,
                 'size' => 0,
