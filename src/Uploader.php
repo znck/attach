@@ -21,7 +21,8 @@ class Uploader implements UploaderInterface
 
     protected $finder;
 
-    public function __construct(UploadedFile $file, Attachment $attachment, $store = true) {
+    public function __construct(UploadedFile $file, Attachment $attachment, $store = true)
+    {
         $this->setFile($file);
         $this->setAttachment($attachment);
 
@@ -32,19 +33,22 @@ class Uploader implements UploaderInterface
         return $this;
     }
 
-    public function attachTo(Model $model) : UploaderInterface {
+    public function attachTo(Model $model) : UploaderInterface
+    {
         $this->setRelated($model);
 
         return $this;
     }
 
-    public function owner(Model $model) : UploaderInterface {
+    public function owner(Model $model) : UploaderInterface
+    {
         $this->setOwner($model);
 
         return $this;
     }
 
-    public function upload() {
+    public function upload()
+    {
         /** @var Attachment|Model $attachment */
         $attachment = $this->getAttachment();
         if ($this->getOwner()) {
@@ -66,51 +70,61 @@ class Uploader implements UploaderInterface
         $attachment->extension = $file->getExtension();
     }
 
-    public function getOwner() {
+    public function getOwner()
+    {
         return $this->owner;
     }
 
-    public function setOwner(Model $owner) {
+    public function setOwner(Model $owner)
+    {
         $this->owner = $owner;
     }
 
-    public function getRelated() {
+    public function getRelated()
+    {
         return $this->related;
     }
 
-    public function setRelated(Model $related) {
+    public function setRelated(Model $related)
+    {
         $this->related = $related;
     }
 
-    public function getFile() : UploadedFile {
+    public function getFile() : UploadedFile
+    {
         return $this->file;
     }
 
-    public function setFile(UploadedFile $file) {
-        if (!$file->isValid()) {
+    public function setFile(UploadedFile $file)
+    {
+        if (! $file->isValid()) {
             throw new UploadException();
         }
 
         $this->file = $file;
     }
 
-    public function getAttachment() : Attachment {
+    public function getAttachment() : Attachment
+    {
         return $this->attachment;
     }
 
-    public function setAttachment(Attachment $attachment) {
+    public function setAttachment(Attachment $attachment)
+    {
         $this->attachment = $attachment;
     }
 
-    public function getFinder() : Finder {
-        if (!$this->finder) {
+    public function getFinder() : Finder
+    {
+        if (! $this->finder) {
             $this->finder = app(Finder::class);
         }
 
         return $this->finder;
     }
 
-    public function setStorage(Storage $storage) : UploaderInterface {
+    public function setStorage(Storage $storage) : UploaderInterface
+    {
         $this->getFinder()->setStorage($storage);
 
         return $this;
