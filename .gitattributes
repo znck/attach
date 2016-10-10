@@ -14,3 +14,6 @@
 /CONTRIBUTING.md    export-ignore
 /cover.png          export-ignore
 /phpunit.xml.dist   export-ignore
+/.sereno            export-ignore
+/sereno.yml         export-ignore
+/package.json       export-ignore

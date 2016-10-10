@@ -1,16 +1,16 @@
 <?php namespace Znck\Attach\Util;
 
 use Illuminate\Filesystem\FilesystemManager;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use Znck\Attach\Contracts\Attachment;
 use Znck\Attach\Contracts\Finder as FinderInterface;
-use Znck\Attach\Contracts\Storage;
 
 class Finder implements FinderInterface
 {
     protected $storage;
 
-    public function getStorage() : Storage {
+    public function getStorage() : Filesystem {
         if (is_null($this->storage)) {
             $this->storage = app(Storage::class);
         }
@@ -18,7 +18,7 @@ class Finder implements FinderInterface
         return $this->storage;
     }
 
-    public function setStorage(Storage $storage) {
+    public function setStorage(Filesystem $storage) {
         $this->storage = $storage;
     }
 

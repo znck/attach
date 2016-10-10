@@ -2,7 +2,7 @@
 
 use GrahamCampbell\TestBench\AbstractPackageTestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Znck\Attach\Providers\AttachServiceProvider;
+use Znck\Attach\AttachServiceProvider;
 
 class TestCase extends AbstractPackageTestCase
 {

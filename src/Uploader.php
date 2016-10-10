@@ -2,10 +2,10 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Znck\Attach\Contracts\Attachment;
 use Znck\Attach\Contracts\Finder;
-use Znck\Attach\Contracts\Storage;
 use Znck\Attach\Contracts\Uploader as UploaderInterface;
 use Znck\Attach\Processors\Store;
 
@@ -21,32 +21,30 @@ class Uploader implements UploaderInterface
 
     protected $finder;
 
+    protected $store;
+
     public function __construct(UploadedFile $file, Attachment $attachment, $store = true) {
         $this->setFile($file);
         $this->setAttachment($attachment);
-
-        if ($store) {
-            (new Store($file))->process($attachment);
-        }
-
-        return $this;
+        $this->store = $store;
     }
 
-    public function attachTo(Model $model) : UploaderInterface {
+    public function attachTo(Model $model): UploaderInterface {
         $this->setRelated($model);
 
         return $this;
     }
 
-    public function owner(Model $model) : UploaderInterface {
+    public function owner(Model $model): UploaderInterface {
         $this->setOwner($model);
 
         return $this;
     }
 
-    public function upload() {
+    public function upload(): UploaderInterface {
         /** @var Attachment|Model $attachment */
         $attachment = $this->getAttachment();
+
         if ($this->getOwner()) {
             $attachment->owner()->associate($this->getOwner());
         }
@@ -64,6 +62,22 @@ class Uploader implements UploaderInterface
         $attachment->mime = $file->getMimeType();
         $attachment->size = $file->getSize();
         $attachment->extension = $file->getExtension();
+
+        if ($this->store) {
+            $this->getFinder()->put($this->getPath(), $this->file, $attachment->visibility);
+        }
+
+        return $this;
+    }
+
+    protected function getPath(): string {
+        $attachment = $this->getAttachment();
+
+        if (!$attachment->path) {
+            $attachment->path = str_random(32).'.'.$this->getFile()->getExtension();
+        }
+
+        return $attachment->path;
     }
 
     public function getOwner() {
@@ -110,7 +124,7 @@ class Uploader implements UploaderInterface
         return $this->finder;
     }
 
-    public function setStorage(Storage $storage) : UploaderInterface {
+    public function setStorage(Filesystem $storage) : UploaderInterface {
         $this->getFinder()->setStorage($storage);
 
         return $this;

@@ -1,6 +1,7 @@
 <?php namespace Znck\Attach\Processors;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Znck\Attach\Contracts\Attachment;
 use Znck\Attach\Contracts\Finder;
 use Znck\Attach\Contracts\Processor;
@@ -18,34 +19,21 @@ abstract class AbstractProcessor implements Processor
      */
     protected $finder;
 
-    public function process(Attachment $attachment) {
-        $this->attachment = $attachment;
-
-        $this->attach($attachment);
-
-        $this->attachment->saved(
-            function (Attachment $attachment) {
-                $this->getFinder()->useDisk($attachment->disk);
-                $this->apply($attachment);
-            }
-        );
-    }
-
-    abstract protected function apply(Attachment $attachment);
-
-    abstract protected function attach(Attachment $attachment);
-
     /**
      * @return Finder
      */
     public function getFinder(): Finder {
+        if (!$this->finder) {
+            $this->finder = app(Finder::class);
+        }
+
         return $this->finder;
     }
 
     /**
-     * @param Storage $storage
+     * @param Filesystem $storage
      */
-    public function setStorage(Storage $storage) {
+    public function setStorage(Filesystem $storage) {
         $this->finder->setStorage($storage);
     }
 }

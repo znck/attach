@@ -1,7 +1,6 @@
-# attach
+# Attach
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what
-PSRs you support to avoid any confusion with users and contributors.
+A fluent way to manage media attachments for Laravel. See [docs](http://znck.me/attach) for install, usage and change log.
 
 ![attach](cover.png)
 
@@ -30,35 +29,6 @@ PSRs you support to avoid any confusion with users and contributors.
   </a>
 </p>
 
-> Milestones
-> - [ ] File uploads.
-> - [ ] Attach files to eloquent models.
-> - [ ] Delete/Update files.
-> - [ ] File preview and/or thumbnail.
-> - [ ] File routing.
-> - [ ] Signed URL.
-
-## Install
-
-Via Composer
-
-``` bash
-$ composer require znck/attach
-```
-
-## Usage
-
-> TODO: Add usage docs.
-
-## Change log
-
-Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
-
-## Testing
-
-``` bash
-$ composer test
-```
 
 ## Contributing
 

@@ -1,6 +1,16 @@
-build
+/build
 .coveralls.yml
 .php_cs.cache
+
+## Sereno
+/.sereno/public/
+/.sereno/content/assets/css/
+/.sereno/content/assets/js/
+/node_modules/
+/_cache/
+sereno.dev.yml
+yarn.lock
+
 
 # Created by .ignore support plugin (hsz.mobi)
 ### JetBrains template
@@ -105,4 +115,3 @@ sftp-config.json
 
 # Linux trash folder which might appear on any partition or disk
 .Trash-*
-

@@ -3,10 +3,15 @@ machine:
     version: 7.0.4
 
 dependencies:
+  pre:
+    - curl -o- -s -L https://yarnpkg.com/install.sh | bash
   override:
     - mkdir -p build/logs
-    - composer install --dev --no-interaction
-    - sed -i 's/^;//' ~/.phpenv/versions/$(phpenv global)/etc/conf.d/xdebug.ini
+    - composer install --dev --no-interaction --no-progress
+    # - sed -i 's/^;//' ~/.phpenv/versions/$(phpenv global)/etc/conf.d/xdebug.ini
+  cache_directories:
+    - "~/.yarn-cache"
+    - "~/.composer/cache"
 
 test:
   override:
@@ -16,3 +21,11 @@ test:
 general:
   artifacts:
     - "build"
+
+deployment:
+  publish:
+    branch: master
+    commands:
+      - composer global require --no-progress sereno/installer 
+      - yarn --no-progress
+      - sereno deploy

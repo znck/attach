@@ -2,20 +2,14 @@
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
-use Znck\Attach\Contracts\Attachment as AttachmentContract;
-use Znck\Attach\Contracts\Downloader as DownloaderContract;
-use Znck\Attach\Contracts\Finder as FinderContract;
-use Znck\Attach\Contracts\Processor as ProcessorContract;
-use Znck\Attach\Contracts\Storage as StorageContract;
-use Znck\Attach\Contracts\Uploader as UploaderContract;
-use Znck\Attach\Util\Finder;
+use Znck\Attach\Processors;
 
 /**
  * @property \Illuminate\Foundation\Application $app
  */
 class AttachServiceProvider extends ServiceProvider
 {
-    protected static $runMigrations = true;
+    public static $runMigrations = true;
 
     protected $configPath = __DIR__.'/../config/attach.php';
 
@@ -39,11 +33,15 @@ class AttachServiceProvider extends ServiceProvider
     public function register() {
         $this->mergeConfigFrom($this->configPath, 'attach');
         $this->registerRoutes($this->app['router']);
-        $this->app->bind(AttachmentContract::class, $this->getConfig('model'));
-        $this->app->bind(DownloaderContract::class, Downloader::class);
-        $this->app->bind(FinderContract::class, Finder::class);
-        $this->app->bind(StorageContract::class, $this->app['filesystem.disk']);
-        $this->app->bind(UploaderContract::class, Uploader::class);
+        $this->app->bind(Contracts\Attachment::class, $this->getConfig('model'));
+        $this->app->bind(Contracts\Downloader::class, Downloader::class);
+        $this->app->bind(Contracts\Finder::class, Util\Finder::class);
+        $this->app->bind(Contracts\Signer::class, Util\Signer::class);
+        $this->app->bind(Contracts\Storage::class, $this->app['filesystem.disk']);
+        $this->app->bind(Contracts\Uploader::class, Uploader::class);
+        $this->app->bind(Contracts\UrlGenerator::class, Util\Url::class);
+
+        Builder::register('resize', Processors\Resize::class);
     }
 
     /**

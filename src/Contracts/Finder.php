@@ -1,10 +1,12 @@
 <?php namespace Znck\Attach\Contracts;
 
+use Illuminate\Contracts\Filesystem\Filesystem;
+
 interface Finder
 {
-    public function getStorage() : Storage;
+    public function getStorage() : Filesystem;
 
-    public function setStorage(Storage $storage);
+    public function setStorage(Filesystem $storage);
 
     public function get(string $path);
 

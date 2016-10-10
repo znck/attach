@@ -1,0 +1,23 @@
+siteName: Attach
+siteDescription: Attach and forget about media management.
+docs_edit_url: https://github.com/znck/attach/edit/master/docs
+
+sereno:
+    url: http://znck.me/attach
+    public: .sereno/public
+    extensions:
+      - Sereno\Extensions\DocsExtension
+    directory:
+      - .sereno/content
+    views:
+      - .sereno/resources/views/
+    ignore:
+      - docs/README.md
+
+docs:
+    directory: docs
+    url_prefix: /
+    index: index
+    extends: docs.base
+    yields: doc_content
+    default: installation
