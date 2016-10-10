@@ -15,7 +15,7 @@ use Znck\Attach\Util\Finder;
  */
 class AttachServiceProvider extends ServiceProvider
 {
-    protected static $runMigrations = true;
+    public static $runMigrations = true;
 
     protected $configPath = __DIR__.'/../config/attach.php';
 
