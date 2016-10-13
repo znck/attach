@@ -7,8 +7,8 @@ use Znck\Attach\Uploaders\DefaultUploader;
 
 class ThumbTest extends TestCase
 {
-
-    public function test_all() {
+    public function test_all()
+    {
         $thumb = new Thumb($this->app);
 
         $uploader = new DefaultUploader();
