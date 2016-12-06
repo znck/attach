@@ -3,6 +3,7 @@
 .php_cs.cache
 
 ## Sereno
+/.sereno/public/
 /.sereno/content/assets/css/
 /.sereno/content/assets/js/
 /node_modules/

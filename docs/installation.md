@@ -5,10 +5,10 @@
 - [Configuration](#config)
 
 {#intro}
-## Introduction
+## [](#intro) Introduction
 
 {#install}
-## Installation
+## [](#install) Installation
 
 Use [Composer](https://getcomposer.com) to install.
 
@@ -17,7 +17,7 @@ composer require znck/attach
 ```
 
 {#config}
-## Configuration
+## [](#config) Configuration
 
 -------------------------------
 [Edit this page on Github]({{ $docs_edit_url }}/installation.md)
