@@ -7,7 +7,7 @@ dependencies:
     - curl -o- -s -L https://yarnpkg.com/install.sh | bash
   override:
     - mkdir -p build/logs
-    - composer install --dev --no-interaction
+    - composer install --dev --no-interaction --no-progress
     # - sed -i 's/^;//' ~/.phpenv/versions/$(phpenv global)/etc/conf.d/xdebug.ini
   cache_directories:
     - "~/.yarn-cache"
@@ -26,6 +26,6 @@ deployment:
   publish:
     branch: master
     commands:
-      - composer require sereno/installer
+      - composer global require sereno/installer
       - yarn --no-progress
       - sereno deploy
