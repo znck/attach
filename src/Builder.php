@@ -12,7 +12,7 @@ class Builder {
 
     protected $uploader;
 
-    protected $processors = [];
+    protected $normalProcessors = [];
 
     protected $queuedProcessors = [];
 
@@ -47,7 +47,7 @@ class Builder {
                 if ($processor instanceof ShouldQueue) {
                     $this->queuedProcessors[] = $processor;
                 } else {
-                    $this->processors[] = $processor;
+                    $this->normalProcessors[] = $processor;
                 }
             }
 
@@ -69,7 +69,7 @@ class Builder {
         $result = call_user_func_array([$this->uploader, $name], (array)$parameters);
 
         if (hash_equals('upload', $name)) {
-            dispatch(new RunProcessors($this->uploader, $this->processors));
+            dispatch(new RunProcessors($this->uploader, $this->normalProcessors));
             dispatch(new RunProcessorsOnQueue($this->uploader, $this->queuedProcessors));
         }
 

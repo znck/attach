@@ -2,13 +2,13 @@
 
 if (!function_exists('serve_attachment')) {
     function serve_attachment(string $filename) {
-        return app(new Znck\Attach\Contracts\Downloader::class)->response($filename);
+        return app(Znck\Attach\Contracts\Downloader::class)->response($filename);
     }
 }
 
 if (!function_exists('download_attachment')) {
     function download_attachment(string $filename) {
-        return app(new Znck\Attach\Contracts\Downloader::class)->download($filename);
+        return app(Znck\Attach\Contracts\Downloader::class)->download($filename);
     }
 }
 
