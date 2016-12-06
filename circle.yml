@@ -4,11 +4,15 @@ machine:
 
 dependencies:
   pre:
+    - export PATH="$HOME/.yarn/bin:$PATH"
     - curl -o- -s -L https://yarnpkg.com/install.sh | bash
   override:
     - mkdir -p build/logs
     - composer install --dev --no-interaction
     # - sed -i 's/^;//' ~/.phpenv/versions/$(phpenv global)/etc/conf.d/xdebug.ini
+  cache_directories:
+    - "~/.yarn-cache"
+    - "~/.composer/cache"
 
 test:
   override:
