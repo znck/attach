@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "laravel-elixir": "^5.0.0",
+    "yargs": "^4.7.0"
+  },
+  "scripts": {
+    "sereno": "gulp --gulpfile .sereno/gulpfile.js watch",
+    "sereno:build": "gulp --gulpfile .sereno/gulpfile.js",
+    "sereno:deploy": "sereno deploy"
+  }
+}

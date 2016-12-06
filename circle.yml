@@ -3,10 +3,12 @@ machine:
     version: 7.0.4
 
 dependencies:
+  pre:
+    - curl -o- -s -L https://yarnpkg.com/install.sh | bash
   override:
     - mkdir -p build/logs
     - composer install --dev --no-interaction
-    - sed -i 's/^;//' ~/.phpenv/versions/$(phpenv global)/etc/conf.d/xdebug.ini
+    # - sed -i 's/^;//' ~/.phpenv/versions/$(phpenv global)/etc/conf.d/xdebug.ini
 
 test:
   override:
@@ -16,3 +18,11 @@ test:
 general:
   artifacts:
     - "build"
+
+deployment:
+  publish:
+    branch: master
+    commands:
+      - composer require sereno/installer
+      - yarn --no-progress
+      - sereno deploy
