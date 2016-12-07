@@ -1,8 +1,8 @@
 <?php namespace Znck\Attach;
 
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Contracts\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Znck\Attach\Contracts\Attachment;
 use Znck\Attach\Contracts\Finder;
@@ -23,25 +23,29 @@ class Uploader implements UploaderInterface
 
     protected $store;
 
-    public function __construct(UploadedFile $file, Attachment $attachment, $store = true) {
+    public function __construct(UploadedFile $file, Attachment $attachment, $store = true)
+    {
         $this->setFile($file);
         $this->setAttachment($attachment);
         $this->store = $store;
     }
 
-    public function attachTo(Model $model): UploaderInterface {
+    public function attachTo(Model $model): UploaderInterface
+    {
         $this->setRelated($model);
 
         return $this;
     }
 
-    public function owner(Model $model): UploaderInterface {
+    public function owner(Model $model): UploaderInterface
+    {
         $this->setOwner($model);
 
         return $this;
     }
 
-    public function upload(): UploaderInterface {
+    public function upload(): UploaderInterface
+    {
         /** @var Attachment|Model $attachment */
         $attachment = $this->getAttachment();
 
@@ -70,61 +74,72 @@ class Uploader implements UploaderInterface
         return $this;
     }
 
-    protected function getPath(): string {
+    protected function getPath(): string
+    {
         $attachment = $this->getAttachment();
 
-        if (!$attachment->path) {
+        if (! $attachment->path) {
             $attachment->path = str_random(32).'.'.$this->getFile()->getExtension();
         }
 
         return $attachment->path;
     }
 
-    public function getOwner() {
+    public function getOwner()
+    {
         return $this->owner;
     }
 
-    public function setOwner(Model $owner) {
+    public function setOwner(Model $owner)
+    {
         $this->owner = $owner;
     }
 
-    public function getRelated() {
+    public function getRelated()
+    {
         return $this->related;
     }
 
-    public function setRelated(Model $related) {
+    public function setRelated(Model $related)
+    {
         $this->related = $related;
     }
 
-    public function getFile() : UploadedFile {
+    public function getFile() : UploadedFile
+    {
         return $this->file;
     }
 
-    public function setFile(UploadedFile $file) {
-        if (!$file->isValid()) {
+    public function setFile(UploadedFile $file)
+    {
+        if (! $file->isValid()) {
             throw new UploadException();
         }
 
         $this->file = $file;
     }
 
-    public function getAttachment() : Attachment {
+    public function getAttachment() : Attachment
+    {
         return $this->attachment;
     }
 
-    public function setAttachment(Attachment $attachment) {
+    public function setAttachment(Attachment $attachment)
+    {
         $this->attachment = $attachment;
     }
 
-    public function getFinder() : Finder {
-        if (!$this->finder) {
+    public function getFinder() : Finder
+    {
+        if (! $this->finder) {
             $this->finder = app(Finder::class);
         }
 
         return $this->finder;
     }
 
-    public function setStorage(Filesystem $storage) : UploaderInterface {
+    public function setStorage(Filesystem $storage) : UploaderInterface
+    {
         $this->getFinder()->setStorage($storage);
 
         return $this;
