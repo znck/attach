@@ -20,7 +20,7 @@ class Url implements UrlGenerator {
         $route = config('attach.route');
         $sign = is_null($sign) ? config('attach.sign', true) : $sign;
         $routeName = is_string($route) ? $route : array_get($route, 'as');
-        $filename = $attachment->getAttachmentKey().(is_null($var) ? '' : '.'.$var).'.'.$attachment->extension
+        $filename = $attachment->getAttachmentKey().(is_null($var) ? '' : '.'.$var).'.'.$attachment->extension;
 
         if ($sign) {
             $expiry = array_get($params, 'expiry');
