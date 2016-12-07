@@ -7,7 +7,7 @@
   },
   "scripts": {
     "sereno": "gulp --gulpfile .sereno/gulpfile.js watch",
-    "sereno:build": "gulp --gulpfile .sereno/gulpfile.js",
+    "sereno:build": "gulp --gulpfile .sereno/gulpfile.js --env default",
     "sereno:deploy": "sereno deploy"
   }
 }

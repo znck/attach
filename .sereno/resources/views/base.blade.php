@@ -7,7 +7,7 @@
 
     <title>@yield('pageTitle') {{$siteName}} - Rahul Kadyan</title>
 
-    <link rel="stylesheet" href="/assets/css/app.css">
+    <link rel="stylesheet" href="http://znck.me/assets/css/app.css">
 </head>
 
 <body>
@@ -41,6 +41,6 @@
 
 <div class="clearfix"></div>
 
-<script src="/assets/js/app.js" type="text/javascript"></script>
+<script src="http://znck.me/assets/js/app.js" type="text/javascript"></script>
 </body>
 </html>

@@ -2,6 +2,9 @@ siteName: Attach
 siteDescription: Attach and forget about media management.
 docs_edit_url: https://github.com/znck/attach/edit/master/docs
 
+github:
+  branch: gh-pages
+
 sereno:
     url: http://znck.me/attach
     public: .sereno/public
@@ -13,11 +16,10 @@ sereno:
       - .sereno/resources/views/
     ignore:
       - docs/README.md
+      - '*.map'
 
 docs:
     directory: docs
     url_prefix: /
     index: index
-    extends: docs.base
-    yields: doc_content
     default: installation

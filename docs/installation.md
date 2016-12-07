@@ -7,6 +7,8 @@
 {#intro}
 ## [](#intro) Introduction
 
+Attach and forget media management.
+
 {#install}
 ## [](#install) Installation
 
