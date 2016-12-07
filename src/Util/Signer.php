@@ -28,7 +28,7 @@ class Signer implements SignerInterface
         $source = is_null($expiry) ? "${url}::${secret}" : "${url}::${expiry}::${secret}";
         $signature = md5($source);
 
-        return url($originalUrl, is_null($expiry) ? compact('signature') : compact('expiry', 'signature'))
+        return url($originalUrl, is_null($expiry) ? compact('signature') : compact('expiry', 'signature'));
     }
 
     /**
