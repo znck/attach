@@ -13,7 +13,7 @@
 <body>
 <nav class="navbar navbar-light border-bottom">
     <div class="container">
-        <a class="navbar-brand" href="http://znck.me/attach/" style="margin-right: 0">
+        <a class="navbar-brand" href="/" style="margin-right: 0">
             Attach
         </a>
         <a class="navbar-brand" href="http://znck.me/">
@@ -46,34 +46,58 @@
                     <div class="docs hidden-lg-up">
         <div class="sidebar">
             <h1>Documentation</h1>
-            <h2>Getting Started</h2>
+            <h2>Preface</h2>
 <ul>
 <li>
-<a href="http://znck.me/attach/installation">Installation</a>
+<a href="/introduction">Introduction</a>
 </li>
 <li>
-<a href="http://znck.me/attach/changelog">Changelog</a>
+<a target="\_blank" href="https://github.com/znck/attach">Github Repository</a>
+</li>
+<li>
+<a target="\_blank" href="https://github.com/znck/attach/issues">Issues &amp; Questions</a>
+</li>
+<li>
+<a href="/changelog">Changelog</a>
+</li>
+<li>
+<a href="/contributing">Contribution Guide</a>
+</li>
+<li>
+<a href="/conduct">Code of Conduct</a>
+</li>
+</ul>
+<h2>Getting Started</h2>
+<ul>
+<li>
+<a href="/installation">Installation</a>
+</li>
+<li>
+<a href="/configuration">Configuration</a>
 </li>
 </ul>
 <h2>Basic Usage</h2>
 <ul>
 <li>
-<a href="http://znck.me/attach/prepare">Preparing Model</a>
+<a href="/upload">Handle Uploads</a>
 </li>
 <li>
-<a href="http://znck.me/attach/upload">Handle Uploads</a>
+<a href="/download">Handle Downloads</a>
 </li>
 <li>
-<a href="http://znck.me/attach/download">Handle Downloads</a>
-</li>
-<li>
-<a href="http://znck.me/attach/security">Security</a>
+<a href="/security">Signed URLs</a>
 </li>
 </ul>
-<h2>Advanced Actions</h2>
+<h2>Advanced Usage</h2>
 <ul>
 <li>
-<a href="http://znck.me/attach/processors">Processors</a>
+<a href="/prepare">Custom Model</a>
+</li>
+<li>
+<a href="/publish">Publish Assets</a>
+</li>
+<li>
+<a href="/processors">Processors</a>
 </li>
 </ul>
 
@@ -89,61 +113,92 @@
         <div class="docs-wrapper container">
             <div class="row">
                 <section class="sidebar col-lg-3 mt-1 mb-1 hidden-md-down">
-            		<h2>Getting Started</h2>
+            		<h2>Preface</h2>
 <ul>
 <li>
-<a href="http://znck.me/attach/installation">Installation</a>
+<a href="/introduction">Introduction</a>
 </li>
 <li>
-<a href="http://znck.me/attach/changelog">Changelog</a>
+<a target="\_blank" href="https://github.com/znck/attach">Github Repository</a>
+</li>
+<li>
+<a target="\_blank" href="https://github.com/znck/attach/issues">Issues &amp; Questions</a>
+</li>
+<li>
+<a href="/changelog">Changelog</a>
+</li>
+<li>
+<a href="/contributing">Contribution Guide</a>
+</li>
+<li>
+<a href="/conduct">Code of Conduct</a>
+</li>
+</ul>
+<h2>Getting Started</h2>
+<ul>
+<li>
+<a href="/installation">Installation</a>
+</li>
+<li>
+<a href="/configuration">Configuration</a>
 </li>
 </ul>
 <h2>Basic Usage</h2>
 <ul>
 <li>
-<a href="http://znck.me/attach/prepare">Preparing Model</a>
+<a href="/upload">Handle Uploads</a>
 </li>
 <li>
-<a href="http://znck.me/attach/upload">Handle Uploads</a>
+<a href="/download">Handle Downloads</a>
 </li>
 <li>
-<a href="http://znck.me/attach/download">Handle Downloads</a>
-</li>
-<li>
-<a href="http://znck.me/attach/security">Security</a>
+<a href="/security">Signed URLs</a>
 </li>
 </ul>
-<h2>Advanced Actions</h2>
+<h2>Advanced Usage</h2>
 <ul>
 <li>
-<a href="http://znck.me/attach/processors">Processors</a>
+<a href="/prepare">Custom Model</a>
+</li>
+<li>
+<a href="/publish">Publish Assets</a>
+</li>
+<li>
+<a href="/processors">Processors</a>
 </li>
 </ul>
 
+
+                    <hr style="margin-bottom: .5rem">
+                    <small>Built with &hearts; using <a href="http://github.com/znck/sereno">Sereno</a></small>
             	</section>
 
             	<article class="col-xs-12 col-lg-9">
             		<h1>Installation</h1>
-<ul>
-<li>
-<a href="#intro">Introduction</a>
-</li>
-<li>
-<a href="#install">Installation</a>
-</li>
-<li>
-<a href="#config">Configuration</a>
-</li>
-</ul>
-<h2 id="intro"><a href="#intro"></a> Introduction</h2>
-<p>Attach and forget media management.</p>
-<h2 id="install"><a href="#install"></a> Installation</h2>
-<p>Use <a href="https://getcomposer.com">Composer</a> to install.</p>
+<p>Use <a target="_blank" href="https://getcomposer.com">Composer</a> to install <strong>attach</strong>.</p>
 <pre><code class="language-bash"><span class="line">composer require znck/attach</span></code></pre>
-<h2 id="config"><a href="#config"></a> Configuration</h2>
+<p>Next, your need to register the service provider,</p>
+<pre><code class="language-php"><span class="line"><span class="hljs-comment">// config/app.php</span></span>
+<span class="line"></span>
+<span class="line"><span class="hljs-string">'providers'</span> =&gt; [</span>
+<span class="line">  ...</span>
+<span class="line">  Znck\Attach\AttachServiceProvider::class,</span>
+<span class="line">],</span></code></pre>
+<p>Run the migrations,</p>
+<pre><code class="language-bash"><span class="line">php artisan migrate</span></code></pre>
+<p>And finally, generate a signing key.</p>
+<pre><code class="language-bash"><span class="line">php artisan attach:key</span></code></pre>
+<p>Optionally, you can publish migrations. See <a href="/publish">advanced usage</a>.</p>
 <hr />
 <p><a href="https://github.com/znck/attach/edit/master/docs/installation.md">Edit this page on Github</a></p>
             	</article>
+
+                <footer class="col-xs-12 hidden-lg-up">
+                    <hr style="margin-bottom: .5rem">
+                    <p>
+                        <small>Built with &hearts; using <a href="http://github.com/znck/sereno">Sereno</a></small>
+                    </p>
+                </footer>
             </div>
         </div>
     </div>

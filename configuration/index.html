@@ -174,7 +174,55 @@
             	</section>
 
             	<article class="col-xs-12 col-lg-9">
-            		<h1>Changelog</h1>
+            		<h1>Configuration</h1>
+<p>Attach works out of the box. You can skip this and go ahead. Sometimes, you may need to tweak some configs to match your requirements.</p>
+<pre><code class="language-php"><span class="line"><span class="hljs-comment">// Default Attach Configuration</span></span>
+<span class="line"><span class="hljs-keyword">return</span> [</span>
+<span class="line">    <span class="hljs-comment">/*</span>
+<span class="line">    |--------------------------------------------------------------------------</span>
+<span class="line">    | Attachment Model</span>
+<span class="line">    |--------------------------------------------------------------------------</span>
+<span class="line">    |</span>
+<span class="line">    | This option defines the attachment model.</span>
+<span class="line">    |</span>
+<span class="line">    */</span></span>
+<span class="line">    <span class="hljs-string">'model'</span> =&gt; \Znck\Attach\Util\Attachment::class,</span>
+<span class="line"></span>
+<span class="line">    <span class="hljs-comment">/*</span>
+<span class="line">    |--------------------------------------------------------------------------</span>
+<span class="line">    | Signed Urls</span>
+<span class="line">    |--------------------------------------------------------------------------</span>
+<span class="line">    |</span>
+<span class="line">    | This option defines the secret key for URL signing.</span>
+<span class="line">    |</span>
+<span class="line">    */</span></span>
+<span class="line">    <span class="hljs-string">'sign'</span> =&gt; <span class="hljs-keyword">true</span>,</span>
+<span class="line">    <span class="hljs-string">'signing'</span> =&gt; [</span>
+<span class="line">        <span class="hljs-string">'key'</span> =&gt; env(<span class="hljs-string">'URL_SIGNING_KEY'</span>, env(<span class="hljs-string">'APP_KEY'</span>)),</span>
+<span class="line">    ],</span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line">    <span class="hljs-comment">/*</span>
+<span class="line">    |--------------------------------------------------------------------------</span>
+<span class="line">    | Attachment Route</span>
+<span class="line">    |--------------------------------------------------------------------------</span>
+<span class="line">    |</span>
+<span class="line">    | Attachment route can take two values.</span>
+<span class="line">    |</span>
+<span class="line">    |  array =&gt; create route with these values</span>
+<span class="line">    |           required: _path, as, uses</span>
+<span class="line">    |  string =&gt; route name</span>
+<span class="line">    */</span></span>
+<span class="line">    <span class="hljs-string">'route'</span> =&gt; [</span>
+<span class="line">        <span class="hljs-string">'_path'</span> =&gt; <span class="hljs-string">'/attach/{filename}'</span>,</span>
+<span class="line">        <span class="hljs-string">'as'</span> =&gt; <span class="hljs-string">'attach::serve'</span>,</span>
+<span class="line">        <span class="hljs-string">'uses'</span> =&gt; \Znck\Attach\Util\AttachController::class.<span class="hljs-string">'@serve'</span>,</span>
+<span class="line">    ],</span>
+<span class="line">];</span></code></pre>
+<p>You can create a file <code>config/attach.php</code> and override any of these configs.</p>
+<p>Optionally, you can publish this config file. See <a href="/publish">advanced usage</a>.</p>
+<hr />
+<p><a href="https://github.com/znck/attach/edit/master/docs/configuration.md">Edit this page on Github</a></p>
             	</article>
 
                 <footer class="col-xs-12 hidden-lg-up">
