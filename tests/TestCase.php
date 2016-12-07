@@ -22,7 +22,8 @@ class TestCase extends AbstractPackageTestCase
         return AttachServiceProvider::class;
     }
 
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
 
         self::afterApplicationCreated(function () {
