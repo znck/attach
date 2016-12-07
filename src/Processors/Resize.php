@@ -27,27 +27,30 @@ class Resize extends AbstractProcessor
         $this->height = $height;
     }
 
-    public function getImageManager() : ImageManager {
-        if (!$this->imageManager) {
+    public function getImageManager() : ImageManager
+    {
+        if (! $this->imageManager) {
             $this->imageManager = app(ImageManager::class);
         }
 
         return $this->imageManager;
     }
 
-    public function setImageManager(ImageManager $imageManager) {
+    public function setImageManager(ImageManager $imageManager)
+    {
         $this->imageManager = $imageManager;
     }
 
-    protected function process(Attachment $attachment) {
+    protected function process(Attachment $attachment)
+    {
         $storage = $this->getFinder();
-        $path = !is_null($this->name) ? $storage->getPath($attachment, $this->name) : $attachment->path;
+        $path = ! is_null($this->name) ? $storage->getPath($attachment, $this->name) : $attachment->path;
         $image = $this->getImageManager()->make($storage->get($attachment->path));
         $image->interlace()->fit($this->width, $this->width);
         $format = $this->name ? $attachment->mime : 'image/jpg';
         $storage->put($path, $image->encode($format), $attachment->visibility);
 
-        if (!is_null($this->name)) {
+        if (! is_null($this->name)) {
             $attachment->variations[$this->name] = [
                 'mime' => $this->mime,
                 'size' => $storage->size($path),

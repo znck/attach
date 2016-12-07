@@ -17,12 +17,11 @@
     | This option defines the secret key for URL signing.
     |
     */
-    'sign' => true,
+    'sign'    => true,
     'signing' => [
-        'key' => env('URL_SIGNING_KEY'),
+        'key'    => env('URL_SIGNING_KEY'),
         'expiry' => 0, // In minutes
     ],
-
 
     /*
     |--------------------------------------------------------------------------
@@ -37,7 +36,7 @@
     */
     'route' => [
         '_path' => '/attach/{filename}',
-        'as' => 'attach::serve',
-        'uses' => \Znck\Attach\Util\AttachController::class.'@serve',
+        'as'    => 'attach::serve',
+        'uses'  => \Znck\Attach\Util\AttachController::class.'@serve',
     ],
 ];
