@@ -7,15 +7,16 @@ use Znck\Attach\Contracts\Signer as SignerInterface;
 class Signer implements SignerInterface
 {
     /**
-     * Create a signed url
+     * Create a signed url.
      *
-     * @param  string $url          Given url.
-     * @param  int|null $expiry     Expired at timestamp.
-     * @param  bool $ignoreParams   Ignore params.
+     * @param string   $url          Given url.
+     * @param int|null $expiry       Expired at timestamp.
+     * @param bool     $ignoreParams Ignore params.
      *
-     * @return string               Signed url.
+     * @return string Signed url.
      */
-    public function sign(string $url, int $expiry = null, bool $ignoreParams = true): string {
+    public function sign(string $url, int $expiry = null, bool $ignoreParams = true): string
+    {
         $originalUrl = $url;
 
         if ($ignoreParams === true) {
@@ -32,16 +33,17 @@ class Signer implements SignerInterface
     }
 
     /**
-     * Verify url signature
+     * Verify url signature.
      *
-     * @param  string $url              Signed url.
-     * @param  string $signature        Given signature.
-     * @param  int|null $expiry         Expired at timestamp.
-     * @param  bool|array $ignoreParams Ignore params.
+     * @param string     $url          Signed url.
+     * @param string     $signature    Given signature.
+     * @param int|null   $expiry       Expired at timestamp.
+     * @param bool|array $ignoreParams Ignore params.
      *
-     * @return bool                     True if valid.
+     * @return bool True if valid.
      */
-    public function verify(string $url, string $signature, int $expiry = null, $ignoreParams = true): bool {
+    public function verify(string $url, string $signature, int $expiry = null, $ignoreParams = true): bool
+    {
         $params = $this->getParameters($url);
         $url = $this->getUrl($url);
 
@@ -69,11 +71,12 @@ class Signer implements SignerInterface
     /**
      * Get query parameters from url.
      *
-     * @param  string $url Given url string.
+     * @param string $url Given url string.
      *
-     * @return array       Key sorted list of parameters.
+     * @return array Key sorted list of parameters.
      */
-    protected function getParameters(string $url): array {
+    protected function getParameters(string $url): array
+    {
         $query = parse_url($url, PHP_URL_QUERY);
 
         parse_str($query, $params);
@@ -86,11 +89,12 @@ class Signer implements SignerInterface
     /**
      * Get url without query string.
      *
-     * @param  string $url Given url.
+     * @param string $url Given url.
      *
-     * @return string      Stripped url.
+     * @return string Stripped url.
      */
-    protected function getUrl(string $url): string {
+    protected function getUrl(string $url): string
+    {
         return array_first(explode('?', $url, 2));
     }
 }
