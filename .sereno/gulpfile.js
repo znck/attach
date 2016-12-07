@@ -11,9 +11,8 @@ elixir.config.publicPath = 'content/assets';
 elixir(function (mix) {
   var env = argv.e || argv.env || 'dev';
 
-  mix.exec('sereno build --dir=.. --env=' + env, [
-        '../sereno.yml',
-        '../sereno.*.yml',
+  mix.exec('sereno build --dir=.. -v --env=' + env, [
+        '../*',
         '../docs/*',
         '../docs/**/*',
         'content/*',

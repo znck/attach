@@ -1,4 +1,10 @@
-<?php return [
+# Configuration
+
+Attach works out of the box. You can skip this and go ahead. Sometimes, you may need to tweak some configs to match your requirements.
+
+``` php
+// Default Attach Configuration
+return [
     /*
     |--------------------------------------------------------------------------
     | Attachment Model
@@ -20,7 +26,6 @@
     'sign' => true,
     'signing' => [
         'key' => env('URL_SIGNING_KEY', env('APP_KEY')),
-        'expiry' => null,
     ],
 
 
@@ -41,3 +46,11 @@
         'uses' => \Znck\Attach\Util\AttachController::class.'@serve',
     ],
 ];
+```
+
+You can create a file `config/attach.php` and override any of these configs.
+
+Optionally, you can publish this config file. See [advanced usage]({{ $docs_url }}/publish).
+
+-------------------------------
+[Edit this page on Github]({{ $docs_edit_url }}/configuration.md)

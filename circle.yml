@@ -24,8 +24,10 @@ general:
 
 deployment:
   publish:
-    branch: master
+    branch:
+      - master
+      - documentation
     commands:
-      - composer global require --no-progress sereno/installer 
+      - composer global require --no-progress sereno/installer
       - yarn --no-progress
       - sereno deploy

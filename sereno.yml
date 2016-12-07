@@ -1,6 +1,8 @@
 siteName: Attach
 siteDescription: Attach and forget about media management.
 docs_edit_url: https://github.com/znck/attach/edit/master/docs
+docs_repo: https://github.com/znck/attach
+docs_issues: https://github.com/znck/attach/issues
 
 github:
   branch: gh-pages
@@ -22,4 +24,4 @@ docs:
     directory: docs
     url_prefix: /
     index: index
-    default: installation
+    default: introduction

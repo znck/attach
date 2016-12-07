@@ -12,7 +12,7 @@ class CreateAttachmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('attachments', function (Blueprint $table) {
+        Schema::create(config('attach.table', 'attachments'), function (Blueprint $table) {
             $table->uuid('id');
             $table->string('title')->nullable();
             $table->string('disk')->nullable();
@@ -35,6 +35,6 @@ class CreateAttachmentsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('attachments');
+        Schema::drop(config('attach.table', 'attachments'));
     }
 }

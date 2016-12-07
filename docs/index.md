@@ -1,15 +1,25 @@
+Preface
+-------
+- [Introduction]({{ $docs_url}}/introduction)
+- [Github Repository]({{ $docs_repo }}){target=\_blank}
+- [Issues & Questions]({{ $docs_issues }}){target=\_blank}
+- [Changelog]({{ $docs_url }}/changelog)
+- [Contribution Guide]({{ $docs_url }}/contributing)
+- [Code of Conduct]({{ $docs_url }}/conduct)
+
 Getting Started
 ---------------
 - [Installation]({{ $docs_url }}/installation)
-- [Changelog]({{ $docs_url }}/changelog)
+- [Configuration]({{ $docs_url }}/configuration)
 
 Basic Usage
 -------------
-- [Preparing Model]({{ $docs_url }}/prepare)
 - [Handle Uploads]({{ $docs_url }}/upload)
 - [Handle Downloads]({{ $docs_url }}/download)
-- [Security]({{ $docs_url }}/security)
+- [Signed URLs]({{ $docs_url }}/security)
 
-Advanced Actions
+Advanced Usage
 ----------------
+- [Custom Model]({{ $docs_url }}/prepare)
+- [Publish Assets]({{ $docs_url }}/publish)
 - [Processors]({{ $docs_url }}/processors)
