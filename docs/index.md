@@ -1,11 +1,8 @@
-Preface
+Prologue
 -------
 - [Introduction]({{ $docs_url}}/introduction)
 - [Github Repository]({{ $docs_repo }}){target=\_blank}
-- [Issues & Questions]({{ $docs_issues }}){target=\_blank}
 - [Changelog]({{ $docs_url }}/changelog)
-- [Contribution Guide]({{ $docs_url }}/contributing)
-- [Code of Conduct]({{ $docs_url }}/conduct)
 
 Getting Started
 ---------------
@@ -23,3 +20,10 @@ Advanced Usage
 - [Custom Model]({{ $docs_url }}/prepare)
 - [Publish Assets]({{ $docs_url }}/publish)
 - [Processors]({{ $docs_url }}/processors)
+
+Community
+---------
+- [Issues & Questions]({{ $docs_issues }}){target=\_blank}
+- [Contribution Guide]({{ $docs_url }}/contributing)
+- [Code of Conduct]({{ $docs_url }}/conduct)
+- [License]({{ $docs_url }}/license)
