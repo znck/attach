@@ -1,4 +1,3 @@
-# Changelog
+# Release Notes / Changelog
 
--------------------------------
-[Edit this page on Github]({{ $docs_edit_url }}/changelog.md)
+> TODO: Keep a changelog
