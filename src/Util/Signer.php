@@ -8,14 +8,16 @@ class Signer implements SignerInterface
 {
     protected $secret;
 
-    public function __construct(string $secret) {
+    public function __construct(string $secret)
+    {
         $this->secret = $secret;
     }
+
     /**
      * Create a signed url.
      *
-     * @param string   $url          Given url.
-     * @param int|null $expiry       Expired at timestamp.
+     * @param string     $url          Given url.
+     * @param int|null   $expiry       Expired at timestamp.
      * @param bool|array $ignoreParams Ignore params.
      *
      * @return string Signed url.
@@ -33,14 +35,14 @@ class Signer implements SignerInterface
         $source = is_null($expiry) ? $url : "${url}::${expiry}";
         $signature = hash_hmac('sha256', $source, $this->secret);
 
-
         return $this->url($originalUrl, is_null($expiry) ? compact('signature') : compact('expiry', 'signature'));
     }
 
-    public function url($url, $params) {
-        $separator =  (parse_url($url, PHP_URL_QUERY) == NULL) ? '?' : '&';
+    public function url($url, $params)
+    {
+        $separator = (parse_url($url, PHP_URL_QUERY) == null) ? '?' : '&';
 
-        return $url . $separator . http_build_query($params);
+        return $url.$separator.http_build_query($params);
     }
 
     /**

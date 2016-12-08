@@ -11,10 +11,10 @@ class Url implements UrlGenerator
     /**
      * Create url from Attachment.
      *
-     * @param AttachmentContract  $attachment
-     * @param string|null $variation
-     * @param array       $params
-     * @param bool|null   $sign
+     * @param AttachmentContract $attachment
+     * @param string|null        $variation
+     * @param array              $params
+     * @param bool|null          $sign
      *
      * @return string
      */
@@ -24,7 +24,6 @@ class Url implements UrlGenerator
         $sign = is_null($sign) ? config('attach.sign', true) : $sign;
         $routeName = is_string($route) ? $route : array_get($route, 'as');
         $filename = $attachment->getAttachmentKey().(is_null($variation) ? '' : '.'.$variation).'.'.$attachment->extension;
-
 
         if ($sign) {
             $expiry = array_get($params, 'expiry');

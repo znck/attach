@@ -4,8 +4,8 @@ use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Filesystem\FilesystemManager;
 use League\Flysystem\FilesystemInterface;
 use Znck\Attach\Contracts\Attachment;
-use Znck\Attach\Contracts\Storage;
 use Znck\Attach\Contracts\Finder as FinderInterface;
+use Znck\Attach\Contracts\Storage;
 
 class Finder implements FinderInterface
 {
