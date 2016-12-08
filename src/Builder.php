@@ -1,13 +1,15 @@
 <?php
 
 namespace Znck\Attach;
+
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
-use Znck\Attach\Contracts\Uploader as UploaderInterface;
 use Znck\Attach\Contracts\Attachment;
 use Znck\Attach\Contracts\ShouldQueue;
+use Znck\Attach\Contracts\Uploader as UploaderInterface;
 
-class Builder {
+class Builder
+{
     protected static $processors = [];
 
     protected $uploader;
@@ -16,22 +18,26 @@ class Builder {
 
     protected $queuedProcessors = [];
 
-    private function __construct(UploaderInterface $uploader) {
+    private function __construct(UploaderInterface $uploader)
+    {
         $this->uploader = $uploader;
     }
 
-    public static function make(Request $request, string $key = 'file', bool $store = true): self {
+    public static function make(Request $request, string $key = 'file', bool $store = true): self
+    {
         return self::makeFromFile($request->file($key), $store);
     }
 
-    public static function makeFromFile(UploadedFile $file, bool $store = true): self {
+    public static function makeFromFile(UploadedFile $file, bool $store = true): self
+    {
         $attachment = app(Attachment::class);
         $uploader = app(UploaderInterface::class, [$file, $attachment, $store]);
 
-        return new Builder($uploader);
+        return new self($uploader);
     }
 
-    public static function register(string $name, $abstract) {
+    public static function register(string $name, $abstract)
+    {
         if (array_key_exists($name, self::$processors)) {
             self::$processors[$name] = array_merge((array) self::$processors[$name], (array) $abstract);
         } else {
@@ -39,10 +45,11 @@ class Builder {
         }
     }
 
-    public function __call($name, $parameters) {
+    public function __call($name, $parameters)
+    {
         if (array_key_exists($name, self::$processors)) {
             foreach ((array) self::$processors[$name] as $abstract) {
-                $processor = app($abstract, (array)$parameters);
+                $processor = app($abstract, (array) $parameters);
 
                 if ($processor instanceof ShouldQueue) {
                     $this->queuedProcessors[] = $processor;
@@ -66,13 +73,15 @@ class Builder {
             }
         }
 
-        $result = call_user_func_array([$this->uploader, $name], (array)$parameters);
+        $result = call_user_func_array([$this->uploader, $name], (array) $parameters);
 
         if (hash_equals('upload', $name)) {
-            if (count($this->normalProcessors))
-            dispatch(new RunProcessors($this->uploader, $this->normalProcessors));
-            if (count($this->queuedProcessors))
-            dispatch(new RunProcessorsOnQueue($this->uploader, $this->queuedProcessors));
+            if (count($this->normalProcessors)) {
+                dispatch(new RunProcessors($this->uploader, $this->normalProcessors));
+            }
+            if (count($this->queuedProcessors)) {
+                dispatch(new RunProcessorsOnQueue($this->uploader, $this->queuedProcessors));
+            }
         }
 
         if ($result === $this->uploader) {
