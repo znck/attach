@@ -2,11 +2,13 @@
 
 trait Attachment
 {
-    public function getAttachmentKey() : string {
+    public function getAttachmentKey() : string
+    {
         return $this->{$this->getAttachmentKeyName()};
     }
 
-    public function getAttachmentKeyName() : string {
+    public function getAttachmentKeyName() : string
+    {
         return 'id';
     }
 }
