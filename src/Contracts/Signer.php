@@ -7,8 +7,8 @@ interface Signer
     /**
      * Create a signed url.
      *
-     * @param string   $url          Given url.
-     * @param int|null $expiry       Expired at timestamp.
+     * @param string     $url          Given url.
+     * @param int|null   $expiry       Expired at timestamp.
      * @param bool|array $ignoreParams Ignore params.
      *
      * @return string Signed url.

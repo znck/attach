@@ -74,7 +74,6 @@ class Uploader implements UploaderInterface
 
         $attachment->path = trim($attachment->path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$this->file->hashName();
 
-
         return $this;
     }
 
@@ -82,7 +81,7 @@ class Uploader implements UploaderInterface
     {
         $attachment = $this->getAttachment();
 
-        if (!$attachment->path) {
+        if (! $attachment->path) {
             throw new \InvalidArgumentException('Attachment path is not set.');
         }
 

@@ -49,7 +49,8 @@ class Builder
         }
     }
 
-    public function queue() {
+    public function queue()
+    {
         $this->shouldQueue = true;
 
         return $this;

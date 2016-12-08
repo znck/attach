@@ -41,9 +41,8 @@ class AttachServiceProvider extends ServiceProvider
         $this->app->bind(Contracts\Uploader::class, Uploader::class);
         $this->app->bind(Contracts\UrlGenerator::class, Util\Url::class);
 
-
         $this->app->singleton(Contracts\Finder::class, function () {
-            $finder = new Util\Finder;
+            $finder = new Util\Finder();
             $finder->setStorage($this->app['filesystem']->disk());
 
             return $finder;
