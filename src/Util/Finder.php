@@ -5,6 +5,7 @@ use Illuminate\Filesystem\FilesystemManager;
 use League\Flysystem\FilesystemInterface;
 use Znck\Attach\Contracts\Attachment;
 use Znck\Attach\Contracts\Finder as FinderInterface;
+use Znck\Attach\Contracts\Storage;
 
 class Finder implements FinderInterface
 {
@@ -12,10 +13,6 @@ class Finder implements FinderInterface
 
     public function getStorage() : Filesystem
     {
-        if (is_null($this->storage)) {
-            $this->storage = app(Storage::class);
-        }
-
         return $this->storage;
     }
 

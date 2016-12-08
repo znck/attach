@@ -16,10 +16,10 @@ class Resize extends AbstractProcessor
     protected $height;
 
     public function __construct(
-        string $name = null,
         int $width = 1600,
+        string $name = null,
         int $height = null,
-        string $mime = 'image/jpg'
+        string $mime = null
     ) {
         $this->name = $name;
         $this->mime = $mime;
@@ -41,13 +41,13 @@ class Resize extends AbstractProcessor
         $this->imageManager = $imageManager;
     }
 
-    protected function process(Attachment $attachment)
+    public function process(Attachment $attachment)
     {
         $storage = $this->getFinder();
         $path = ! is_null($this->name) ? $storage->getPath($attachment, $this->name) : $attachment->path;
         $image = $this->getImageManager()->make($storage->get($attachment->path));
         $image->interlace()->fit($this->width, $this->width);
-        $format = $this->name ? $attachment->mime : 'image/jpg';
+        $format = $this->mime ?? $attachment->mime;
         $storage->put($path, $image->encode($format), $attachment->visibility);
 
         if (! is_null($this->name)) {

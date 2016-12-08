@@ -6,30 +6,43 @@ use Znck\Attach\Contracts\Signer as SignerInterface;
 
 class Signer implements SignerInterface
 {
+    protected $secret;
+
+    public function __construct(string $secret)
+    {
+        $this->secret = $secret;
+    }
+
     /**
      * Create a signed url.
      *
-     * @param string   $url          Given url.
-     * @param int|null $expiry       Expired at timestamp.
-     * @param bool     $ignoreParams Ignore params.
+     * @param string     $url          Given url.
+     * @param int|null   $expiry       Expired at timestamp.
+     * @param bool|array $ignoreParams Ignore params.
      *
      * @return string Signed url.
      */
-    public function sign(string $url, int $expiry = null, bool $ignoreParams = true): string
+    public function sign(string $url, int $expiry = null, $ignoreParams = true): string
     {
         $originalUrl = $url;
 
         if ($ignoreParams === true) {
             $url = $this->getUrl($url);
         } else {
-            $url = url($this->getUrl($url), $this->getParameters($url));
+            $url = $this->url($this->getUrl($url), array_except($this->getParameters($url), (array) $ignoreParams));
         }
 
-        $secret = config('attach.signing.key');
-        $source = is_null($expiry) ? "${url}::${secret}" : "${url}::${expiry}::${secret}";
-        $signature = md5($source);
+        $source = is_null($expiry) ? $url : "${url}::${expiry}";
+        $signature = hash_hmac('sha256', $source, $this->secret);
 
-        return url($originalUrl, is_null($expiry) ? compact('signature') : compact('expiry', 'signature'));
+        return $this->url($originalUrl, is_null($expiry) ? compact('signature') : compact('expiry', 'signature'));
+    }
+
+    public function url($url, $params)
+    {
+        $separator = (parse_url($url, PHP_URL_QUERY) == null) ? '?' : '&';
+
+        return $url.$separator.http_build_query($params);
     }
 
     /**
@@ -47,9 +60,6 @@ class Signer implements SignerInterface
         $params = $this->getParameters($url);
         $url = $this->getUrl($url);
 
-        $expiry = array_get($params, 'expiry', null);
-        $signature = (string) array_get($params, 'signature', '');
-
         unset($params['expiry']);
         unset($params['signature']);
 
@@ -58,12 +68,11 @@ class Signer implements SignerInterface
         }
 
         if ($ignoreParams !== true) {
-            $url = url($url, $params);
+            $url = $this->url($url, $params);
         }
 
-        $secret = config('attach.signing.key');
-        $source = is_null($expiry) ? "${url}::${secret}" : "${url}::${expiry}::${secret}";
-        $expected = md5($source);
+        $source = is_null($expiry) ? $url : "${url}::${expiry}";
+        $expected = hash_hmac('sha256', $source, $this->secret);
 
         return hash_equals($expected, $signature);
     }
