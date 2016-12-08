@@ -43,7 +43,7 @@ If you discover any security related issues, please email hi@znck.me instead of 
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE) for more information.
+The MIT License (MIT). Please see [License File][LICENSE] for more information.
 
 [LICENSE]: http://znck.me/attach/license
 [link-author]: https://github.com/znck
