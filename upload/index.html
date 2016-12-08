@@ -209,15 +209,7 @@
 
             	<article class="col-xs-12 col-lg-9">
             		<h1>Handle Uploads</h1>
-<ul>
-<li>
-<a href="#simple">Simple Upload</a>
-</li>
-<li>
-<a href="#image">Image Upload</a>
-</li>
-</ul>
-<h2 id="simple"><a href="#simple"></a> Simple Upload</h2>
+<p>Use <code>Znck\Attach\Builder</code> to fluently upload a file.</p>
 <pre><code class="language-php"><span class="line">...</span>
 <span class="line"><span class="hljs-keyword">use</span> <span class="hljs-title">Znck</span>\<span class="hljs-title">Attach</span>\<span class="hljs-title">Builder</span>;</span>
 <span class="line"></span>
@@ -225,9 +217,31 @@
 <span class="line">  ...</span>
 <span class="line"></span>
 <span class="line">  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">store</span><span class="hljs-params">(Request $request)</span> </span>{</span>
-<span class="line">    Builder::make($request)-&gt;upload([<span class="hljs-string">'path'</span> =&gt; <span class="hljs-string">'uploads/'</span>])</span>
+<span class="line">    $attachment = Builder::make($request)-&gt;upload(<span class="hljs-string">'uploads/files'</span>)-&gt;getAttachment();</span>
+<span class="line"></span>
+<span class="line">    <span class="hljs-keyword">return</span> attach_url($attachment);</span>
 <span class="line">  }</span>
 <span class="line">}</span></code></pre>
+<p>You can resize images.</p>
+<pre><code class="language-php"><span class="line">Builder::make($request)</span>
+<span class="line">  -&gt;resize(<span class="hljs-number">1200</span>)</span>
+<span class="line">  -&gt;upload(<span class="hljs-string">'uploads/files'</span>)</span></code></pre>
+<p>You can create multiple sizes of images.</p>
+<pre><code class="language-php"><span class="line">Builder::make($request)</span>
+<span class="line">  -&gt;resize(<span class="hljs-number">256</span>, <span class="hljs-string">'small'</span>)</span>
+<span class="line">  -&gt;resize(<span class="hljs-number">600</span>, <span class="hljs-string">'medium'</span>)</span>
+<span class="line">  -&gt;resize(<span class="hljs-number">1200</span>, <span class="hljs-string">'large'</span>)</span>
+<span class="line">  -&gt;resize(<span class="hljs-number">2400</span>, <span class="hljs-string">'retina'</span>)</span>
+<span class="line">  -&gt;upload(<span class="hljs-string">'uploads/files'</span>)</span></code></pre>
+<p>And links are generated with same ease.</p>
+<pre><code class="language-php"><span class="line">attach_url($attachment, <span class="hljs-string">'small'</span>); <span class="hljs-comment">// For small image.</span></span></code></pre>
+<p>You can resize images on queues.</p>
+<pre><code class="language-php"><span class="line">Builder::make($request)</span>
+<span class="line">  -&gt;queue()-&gt;resize(<span class="hljs-number">256</span>, <span class="hljs-string">'small'</span>)</span>
+<span class="line">  -&gt;queue()-&gt;resize(<span class="hljs-number">600</span>, <span class="hljs-string">'medium'</span>)</span>
+<span class="line">  -&gt;queue()-&gt;resize(<span class="hljs-number">1200</span>, <span class="hljs-string">'large'</span>) <span class="hljs-comment">// This would run on queue.</span></span>
+<span class="line">  -&gt;resize(<span class="hljs-number">2400</span>) <span class="hljs-comment">// This would run in sync.</span></span>
+<span class="line">  -&gt;upload(<span class="hljs-string">'uploads/files'</span>)</span></code></pre>
 <hr />
 <p><a href="https://github.com/znck/attach/edit/master/docs/upload.md">Edit this page on Github</a></p>
             	</article>

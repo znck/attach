@@ -209,6 +209,17 @@
 
             	<article class="col-xs-12 col-lg-9">
             		<h1>Handle Downloads</h1>
+<p><strong>Attach</strong> provides simple function to serve and download attachment.</p>
+<pre><code class="language-php"><span class="line">...</span>
+<span class="line"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">show</span><span class="hljs-params">($filename)</span> </span>{</span>
+<span class="line">  <span class="hljs-comment">// Respond with file stream.</span></span>
+<span class="line">  <span class="hljs-keyword">return</span> serve_attachment($filename);</span>
+<span class="line">}</span>
+<span class="line"></span>
+<span class="line"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">download</span><span class="hljs-params">($filename)</span> </span>{</span>
+<span class="line">  <span class="hljs-comment">// Downloads attachment.</span></span>
+<span class="line">  <span class="hljs-keyword">return</span> download_attachment($filename);</span>
+<span class="line">}</span></code></pre>
 <hr />
 <p><a href="https://github.com/znck/attach/edit/master/docs/download.md">Edit this page on Github</a></p>
             	</article>
