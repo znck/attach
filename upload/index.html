@@ -200,25 +200,32 @@
 </li>
 </ul>
 
-
-                    <hr style="margin-bottom: .5rem">
-<p>
-    <small>Built with &hearts; using <a href="http://github.com/serenohq/sereno" target="_blank">Sereno</a></small>
-</p>
             	</section>
 
             	<article class="col-xs-12 col-lg-9">
             		<h1>Handle Uploads</h1>
+<ul>
+<li>
+<a href="#simple">Simple Upload</a>
+</li>
+<li>
+<a href="#image">Image Upload</a>
+</li>
+</ul>
+<h2 id="simple"><a href="#simple"></a> Simple Upload</h2>
+<pre><code class="language-php"><span class="line">...</span>
+<span class="line"><span class="hljs-keyword">use</span> <span class="hljs-title">Znck</span>\<span class="hljs-title">Attach</span>\<span class="hljs-title">Builder</span>;</span>
+<span class="line"></span>
+<span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UploadController</span> </span>{</span>
+<span class="line">  ...</span>
+<span class="line"></span>
+<span class="line">  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">store</span><span class="hljs-params">(Request $request)</span> </span>{</span>
+<span class="line">    Builder::make($request)-&gt;upload([<span class="hljs-string">'path'</span> =&gt; <span class="hljs-string">'uploads/'</span>])</span>
+<span class="line">  }</span>
+<span class="line">}</span></code></pre>
 <hr />
 <p><a href="https://github.com/znck/attach/edit/master/docs/upload.md">Edit this page on Github</a></p>
             	</article>
-
-                <footer class="col-xs-12 hidden-lg-up">
-                    <hr style="margin-bottom: .5rem">
-<p>
-    <small>Built with &hearts; using <a href="http://github.com/serenohq/sereno" target="_blank">Sereno</a></small>
-</p>
-                </footer>
             </div>
         </div>
     </div>
