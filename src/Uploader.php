@@ -65,11 +65,15 @@ class Uploader implements UploaderInterface
         $attachment->filename = $file->getClientOriginalName();
         $attachment->mime = $file->getMimeType();
         $attachment->size = $file->getSize();
-        $attachment->extension = $file->getExtension();
+        $attachment->extension = $file->getClientOriginalExtension();
+        $attachment->visibility = $attachment->visibility ?? 'private';
 
         if ($this->store) {
             $this->getFinder()->put($this->getPath(), $this->file, $attachment->visibility);
         }
+
+        $attachment->path = trim($attachment->path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$this->file->hashName();
+
 
         return $this;
     }
@@ -78,8 +82,8 @@ class Uploader implements UploaderInterface
     {
         $attachment = $this->getAttachment();
 
-        if (! $attachment->path) {
-            $attachment->path = str_random(32).'.'.$this->getFile()->getExtension();
+        if (!$attachment->path) {
+            throw new \InvalidArgumentException('Attachment path is not set.');
         }
 
         return $attachment->path;

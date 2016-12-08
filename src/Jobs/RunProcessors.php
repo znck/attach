@@ -1,4 +1,5 @@
 <?php
+namespace Znck\Attach\Jobs;
 
 use Znck\Attach\Contracts\Attachment;
 use Znck\Attach\Contracts\Uploader;
@@ -20,7 +21,7 @@ class RunProcessors
 
     public function handle(): bool
     {
-        foreach ($processors as $processor) {
+        foreach ($this->processors as $processor) {
             $processor->process($this->attachment);
         }
 

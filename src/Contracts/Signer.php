@@ -9,11 +9,11 @@ interface Signer
      *
      * @param string   $url          Given url.
      * @param int|null $expiry       Expired at timestamp.
-     * @param bool     $ignoreParams Ignore params.
+     * @param bool|array $ignoreParams Ignore params.
      *
      * @return string Signed url.
      */
-    public function sign(string $url, int $expiry = null, bool $ignoreParams = true): string;
+    public function sign(string $url, int $expiry = null, $ignoreParams = true): string;
 
     /**
      * Verify url signature.

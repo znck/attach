@@ -35,13 +35,22 @@ class AttachServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom($this->configPath, 'attach');
         $this->registerRoutes($this->app['router']);
+
         $this->app->bind(Contracts\Attachment::class, $this->getConfig('model'));
         $this->app->bind(Contracts\Downloader::class, Downloader::class);
-        $this->app->bind(Contracts\Finder::class, Util\Finder::class);
-        $this->app->bind(Contracts\Signer::class, Util\Signer::class);
-        $this->app->bind(Contracts\Storage::class, $this->app['filesystem.disk']);
         $this->app->bind(Contracts\Uploader::class, Uploader::class);
         $this->app->bind(Contracts\UrlGenerator::class, Util\Url::class);
+
+
+        $this->app->singleton(Contracts\Finder::class, function () {
+            $finder = new Util\Finder;
+            $finder->setStorage($this->app['filesystem']->disk());
+
+            return $finder;
+        });
+        $this->app->singleton(Contracts\Signer::class, function () {
+            return new Util\Signer($this->getConfig('signing.key'));
+        });
 
         Builder::register('resize', Processors\Resize::class);
     }

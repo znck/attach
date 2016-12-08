@@ -179,9 +179,7 @@ class Downloader implements DownloaderInterface
      */
     protected function respond(string $filename, $headers = []) : StreamedResponse
     {
-        if (! is_null($filename)) {
-            $this->findAttachment($filename);
-        }
+        $this->findAttachment($filename);
 
         $meta = $this->getRequestedMeta();
         /** @var ResponseFactory $response */
