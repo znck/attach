@@ -2,7 +2,7 @@ Prologue
 -------
 - [Introduction]({{ $docs_url}}/introduction)
 - [Github Repository]({{ $docs_repo }}){target=\_blank}
-- [Changelog]({{ $docs_url }}/changelog)
+- [Release Notes]({{ $docs_url }}/changelog)
 
 Getting Started
 ---------------

@@ -69,7 +69,9 @@ class Builder {
         $result = call_user_func_array([$this->uploader, $name], (array)$parameters);
 
         if (hash_equals('upload', $name)) {
+            if (count($this->normalProcessors))
             dispatch(new RunProcessors($this->uploader, $this->normalProcessors));
+            if (count($this->queuedProcessors))
             dispatch(new RunProcessorsOnQueue($this->uploader, $this->queuedProcessors));
         }
 
