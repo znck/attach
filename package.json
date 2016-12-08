@@ -6,8 +6,8 @@
     "yargs": "^4.7.0"
   },
   "scripts": {
-    "sereno": "gulp --gulpfile .sereno/gulpfile.js watch",
-    "sereno:build": "gulp --gulpfile .sereno/gulpfile.js --env default",
+    "sereno": "gulp --gulpfile .github/sereno/gulpfile.js watch",
+    "sereno:build": "gulp --gulpfile .github/sereno/gulpfile.js --env default",
     "sereno:deploy": "sereno deploy"
   }
 }
