@@ -3,9 +3,7 @@
 .php_cs.cache
 
 ## Sereno
-/.sereno/public/
-/.sereno/content/assets/css/
-/.sereno/content/assets/js/
+/.github/sereno/public/
 /node_modules/
 /_cache/
 sereno.dev.yml

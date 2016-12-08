@@ -9,13 +9,13 @@ github:
 
 sereno:
     url: http://znck.me/attach
-    public: .sereno/public
+    public: .github/sereno/public
     extensions:
       - Sereno\Extensions\DocsExtension
     directory:
-      - .sereno/content
+      - .github/sereno/content
     views:
-      - .sereno/resources/views/
+      - .github/sereno/resources/views
     ignore:
       - docs/README.md
       - '*.map'

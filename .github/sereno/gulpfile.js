@@ -9,12 +9,12 @@ var argv = require('yargs').argv;
 elixir.config.publicPath = 'content/assets';
 
 elixir(function (mix) {
-  var env = argv.e || argv.env || 'dev';
+  var env = argv.e || argv.env || 'default';
 
-  mix.exec('sereno build --dir=.. -v --env=' + env, [
-        '../*',
-        '../docs/*',
-        '../docs/**/*',
+  mix.exec('sereno build --dir=../../ -v --env=' + env, [
+        '../../*',
+        '../../docs/*',
+        '../../docs/**/*',
         'content/*',
         'content/**/*',
         'resources/*',
