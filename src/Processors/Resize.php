@@ -60,9 +60,11 @@ class Resize extends AbstractProcessor
         $storage->put($path, $image->encode($format), $attachment->visibility);
 
         if (! is_null($this->name)) {
-            $attachment->variations[$this->name] = [
-                'mime' => $this->mime,
-                'size' => $storage->size($path),
+            $attachment->variations = (array) $attachment->variations + [
+                $this->name => [
+                    'mime' => $this->mime,
+                    'size' => $storage->size($path),
+                ],
             ];
         } else {
             $attachment->size = $storage->size($path);
