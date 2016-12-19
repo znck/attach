@@ -45,8 +45,17 @@ class Resize extends AbstractProcessor
     {
         $storage = $this->getFinder();
         $path = ! is_null($this->name) ? $storage->getPath($attachment, $this->name) : $attachment->path;
+
         $image = $this->getImageManager()->make($storage->get($attachment->path));
-        $image->interlace()->fit($this->width, $this->width);
+
+        if (is_null($this->height)) {
+            $this->height = (int) ($this->width / $image->width() * $image->height());
+        }
+
+        $image->interlace()->fit($this->width, $this->height, function ($constraint) {
+            $constraint->upsize();
+        });
+
         $format = $this->mime ?? $attachment->mime;
         $storage->put($path, $image->encode($format), $attachment->visibility);
 
