@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Znck\Attach\Contracts\Signer;
+use Znck\Exceptions\InvalidSignatureException;
 
 class AttachController extends Controller
 {
@@ -10,10 +11,14 @@ class AttachController extends Controller
     {
         if (config('attach.sign')) {
             $url = url($request->url(), array_except($request->query(), ['signature', 'expire']));
-            $signature = $request->query('signature');
+            $signature = (string) $request->query('signature');
             $expiry = $request->query('expiry');
             if (! $signer->verify($url, $signature, $expiry)) {
-                return abort(404);
+                throw new InvalidSignatureException([
+                    'signature' => $signature,
+                    'expiry' => $expiry,
+                    'url' => $url,
+                ], 403, 'Invalid Signature');
             }
         }
 
