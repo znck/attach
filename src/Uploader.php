@@ -15,6 +15,9 @@ class Uploader implements UploaderInterface
 
     protected $owner;
 
+    /**
+     * @var \Illuminate\Http\UploadedFile
+     */
     protected $file;
 
     protected $attachment;
@@ -72,7 +75,9 @@ class Uploader implements UploaderInterface
             $this->getFinder()->put($this->getPath(), $this->file, $attachment->visibility);
         }
 
-        $attachment->path = trim($attachment->path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$this->file->hashName();
+        $name = md5_file($this->file->getRealPath()).'.'.$attachment->extension;
+
+        $attachment->path = trim($attachment->path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$name;
 
         return $this;
     }

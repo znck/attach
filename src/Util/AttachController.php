@@ -13,6 +13,7 @@ class AttachController extends Controller
             $url = url($request->url(), array_except($request->query(), ['signature', 'expire']));
             $signature = (string) $request->query('signature');
             $expiry = $request->query('expiry');
+
             if (! $signer->verify($url, $signature, $expiry)) {
                 throw new InvalidSignatureException([
                     'signature' => $signature,

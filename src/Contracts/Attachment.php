@@ -22,7 +22,10 @@ interface Attachment
 
     public function getAttachmentKeyName() : string;
 
-    public function owner() : BelongsTo;
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function owner();
 
     /**
      * @return MorphOneOrMany
