@@ -70,14 +70,13 @@ class Uploader implements UploaderInterface
         $attachment->size = $file->getSize();
         $attachment->extension = $file->getClientOriginalExtension();
         $attachment->visibility = $attachment->visibility ?? 'private';
+        $name = md5_file($this->file->getRealPath()).'.'.$attachment->extension;
+
+        $attachment->path = trim($attachment->path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$name;
 
         if ($this->store) {
             $this->getFinder()->put($this->getPath(), $this->file, $attachment->visibility);
         }
-
-        $name = md5_file($this->file->getRealPath()).'.'.$attachment->extension;
-
-        $attachment->path = trim($attachment->path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$name;
 
         return $this;
     }
@@ -86,7 +85,7 @@ class Uploader implements UploaderInterface
     {
         $attachment = $this->getAttachment();
 
-        if (! $attachment->path) {
+        if (!$attachment->path) {
             throw new \InvalidArgumentException('Attachment path is not set.');
         }
 
@@ -113,21 +112,21 @@ class Uploader implements UploaderInterface
         $this->related = $related;
     }
 
-    public function getFile() : UploadedFile
+    public function getFile(): UploadedFile
     {
         return $this->file;
     }
 
     public function setFile(UploadedFile $file)
     {
-        if (! $file->isValid()) {
+        if (!$file->isValid()) {
             throw new UploadException();
         }
 
         $this->file = $file;
     }
 
-    public function getAttachment() : Attachment
+    public function getAttachment(): Attachment
     {
         return $this->attachment;
     }
@@ -137,16 +136,16 @@ class Uploader implements UploaderInterface
         $this->attachment = $attachment;
     }
 
-    public function getFinder() : Finder
+    public function getFinder(): Finder
     {
-        if (! $this->finder) {
+        if (!$this->finder) {
             $this->finder = app(Finder::class);
         }
 
         return $this->finder;
     }
 
-    public function setStorage(Filesystem $storage) : UploaderInterface
+    public function setStorage(Filesystem $storage): UploaderInterface
     {
         $this->getFinder()->setStorage($storage);
 
