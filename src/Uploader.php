@@ -75,7 +75,7 @@ class Uploader implements UploaderInterface
         $attachment->path = trim($attachment->path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$name;
 
         if ($this->store) {
-            $this->getFinder()->put($this->getPath(), $this->file, $attachment->visibility);
+            $this->getFinder()->put($this->getPath(), file_get_contents($this->file), $attachment->visibility);
         }
 
         return $this;
