@@ -17,8 +17,8 @@ class AttachController extends Controller
             if (! $signer->verify($url, $signature, $expiry)) {
                 throw new InvalidSignatureException([
                     'signature' => $signature,
-                    'expiry' => $expiry,
-                    'url' => $url,
+                    'expiry'    => $expiry,
+                    'url'       => $url,
                 ], 403, 'Invalid Signature');
             }
         }
