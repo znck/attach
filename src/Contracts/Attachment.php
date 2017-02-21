@@ -1,6 +1,5 @@
 <?php namespace Znck\Attach\Contracts;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 
 /**
