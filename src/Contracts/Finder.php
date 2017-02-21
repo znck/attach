@@ -4,7 +4,7 @@ use Illuminate\Contracts\Filesystem\Filesystem;
 
 interface Finder
 {
-    public function getStorage() : Filesystem;
+    public function getStorage(): Filesystem;
 
     public function setStorage(Filesystem $storage);
 
@@ -12,9 +12,11 @@ interface Finder
 
     public function put(string $path, $content, $visibility = null);
 
+    public function putAs(string $path, $content, string $filename, $visibility = null);
+
     public function size(string $path);
 
-    public function getPath(Attachment $attachment, string $variation) : string;
+    public function getPath(Attachment $attachment, string $variation): string;
 
     /**
      * @param string $path
@@ -23,5 +25,5 @@ interface Finder
      */
     public function readStream(string $path);
 
-    public function useDisk(string $disk) : self;
+    public function useDisk(string $disk): self;
 }

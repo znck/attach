@@ -29,10 +29,6 @@ class Finder implements FinderInterface
 
     public function put(string $path, $content, $visibility = null)
     {
-        if ($content instanceof UploadedFile) {
-            return $this->getStorage()->putFileAs(dirname($path), $content, basename($path), $visibility);
-        }
-
         return $this->getStorage()->put($path, $content, $visibility);
     }
 
@@ -70,5 +66,10 @@ class Finder implements FinderInterface
         $path = str_replace_last($extension, '', $path);
 
         return $path.$variation.'.'.$extension;
+    }
+
+    public function putAs(string $path, $content, string $filename, $visibility = null)
+    {
+        return $this->getStorage()->putFileAs($path, $content, $filename, $visibility);
     }
 }

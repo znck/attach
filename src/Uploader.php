@@ -72,11 +72,11 @@ class Uploader implements UploaderInterface
         $attachment->visibility = $attachment->visibility ?? 'private';
         $name = md5_file($this->file->getRealPath()).'.'.$attachment->extension;
 
-        $attachment->path = trim($attachment->path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$name;
-
         if ($this->store) {
-            $this->getFinder()->put($this->getPath(), $this->file, $attachment->visibility);
+            $this->getFinder()->putAs($attachment->path, $this->file, $name, $attachment->visibility);
         }
+
+        $attachment->path = trim($attachment->path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$name;
 
         return $this;
     }
