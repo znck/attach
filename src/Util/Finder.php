@@ -2,6 +2,7 @@
 
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Filesystem\FilesystemManager;
+use Illuminate\Http\UploadedFile;
 use League\Flysystem\FilesystemInterface;
 use Znck\Attach\Contracts\Attachment;
 use Znck\Attach\Contracts\Finder as FinderInterface;
@@ -11,7 +12,7 @@ class Finder implements FinderInterface
 {
     protected $storage;
 
-    public function getStorage() : Filesystem
+    public function getStorage(): Filesystem
     {
         return $this->storage;
     }
@@ -28,6 +29,10 @@ class Finder implements FinderInterface
 
     public function put(string $path, $content, $visibility = null)
     {
+        if ($content instanceof UploadedFile) {
+            return $this->getStorage()->putFileAs(dirname($path), $content, basename($path), $visibility);
+        }
+
         return $this->getStorage()->put($path, $content, $visibility);
     }
 
@@ -41,14 +46,14 @@ class Finder implements FinderInterface
         return $this->getStorageDriver()->readStream($path);
     }
 
-    public function useDisk(string $disk = null) : FinderInterface
+    public function useDisk(string $disk = null): FinderInterface
     {
         $this->setStorage(app(FilesystemManager::class)->disk($disk));
 
         return $this;
     }
 
-    public function getStorageDriver() : FilesystemInterface
+    public function getStorageDriver(): FilesystemInterface
     {
         return $this->getStorage()->getDriver();
     }
@@ -58,7 +63,7 @@ class Finder implements FinderInterface
         return $this->getStorage()->size($path);
     }
 
-    public function getPath(Attachment $attachment, string $variation) : string
+    public function getPath(Attachment $attachment, string $variation): string
     {
         $path = $attachment->path;
         $extension = $attachment->extension;
