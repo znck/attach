@@ -22,19 +22,19 @@ class AttachServiceProvider extends ServiceProvider
 {
     public static $runMigrations = true;
 
-    protected $configPath = __DIR__.'/../config/attach.php';
+    protected $configPath = __DIR__.'/../../config/attach.php';
 
     public function boot()
     {
         $this->publishes([$this->configPath => config_path('attach.php')], 'attach-config');
         if ($this->app->runningInConsole()) {
             if (self::$runMigrations) {
-                $this->loadMigrationsFrom(__DIR__.'/../migrations/');
+                $this->loadMigrationsFrom(__DIR__.'/../../migrations/');
 
                 return;
             }
 
-            $this->publishes([__DIR__.'/../migrations/' => database_path('migrations')], 'attach-migrations');
+            $this->publishes([__DIR__.'/../../migrations/' => database_path('migrations')], 'attach-migrations');
         }
     }
 
