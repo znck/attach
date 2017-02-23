@@ -165,10 +165,7 @@ class Downloader implements DownloaderInterface
 
     public function download(string $filename = null): Response
     {
-        return $this->respond(
-            $filename,
-            ['Content-Disposition' => "attachment; filename=\"{$this->attachment->filename}\""]
-        );
+        return $this->respond($filename);
     }
 
     /**
@@ -185,6 +182,11 @@ class Downloader implements DownloaderInterface
         /** @var ResponseFactory $response */
         $response = app(ResponseFactory::class);
 
-        return $response->file($this->getRequestedFile(), 200, $headers + ['Content-Type' => $meta['mime']]);
+        return $response->file($this->getRequestedFile(),
+            $headers +
+            [
+                'Content-Type' => $meta['mime'],
+                'Content-Disposition' => 'attachment; filename="'.addslashes($this->attachment->filename).'"',
+            ]);
     }
 }
