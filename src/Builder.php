@@ -34,7 +34,7 @@ class Builder
     public static function makeFromFile(UploadedFile $file, bool $store = true): self
     {
         $attachment = app(AttachmentContract::class);
-        $uploader = app(UploaderContract::class, [$file, $attachment, $store]);
+        $uploader = app(UploaderContract::class, [$file, $attachment]);
 
         return new self($uploader);
     }
