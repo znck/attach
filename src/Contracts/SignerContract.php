@@ -2,7 +2,7 @@
 
 namespace Znck\Attach\Contracts;
 
-interface Signer
+interface SignerContract
 {
     /**
      * Create a signed url.

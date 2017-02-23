@@ -1,12 +1,26 @@
-<?php namespace Znck\Attach\Contracts;
+<?php
 
-use Symfony\Component\HttpFoundation\Response;
+namespace Znck\Attach\Contracts;
 
 interface Downloader
 {
-    public function findAttachment(string $filename) : Attachment;
+    /**
+     * Respond with file.
+     *
+     * @param \Znck\Attach\Contracts\AttachmentContract $attachment
+     * @param string $variation
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function response(AttachmentContract $attachment, string $variation = null);
 
-    public function response(string $filename = null) : Response;
-
-    public function download(string $filename = null) : Response;
+    /**
+     * Download a file.
+     *
+     * @param \Znck\Attach\Contracts\AttachmentContract $attachment
+     * @param string|null $variation
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function download(AttachmentContract $attachment, string $variation = null);
 }

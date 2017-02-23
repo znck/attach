@@ -1,23 +1,29 @@
 <?php
 
-namespace Znck\Attach\Util;
+namespace Znck\Attach;
 
-use Znck\Attach\Contracts\Signer as SignerInterface;
+use Znck\Attach\Contracts\SignerContract as SignerInterface;
+use Znck\Exceptions\InvalidSignatureException;
 
 class Signer implements SignerInterface
 {
     protected $secret;
+    /**
+     * @var int
+     */
+    private $expiry;
 
-    public function __construct(string $secret)
+    public function __construct(string $secret, int $expiry = null)
     {
         $this->secret = $secret;
+        $this->expiry = $expiry;
     }
 
     /**
      * Create a signed url.
      *
-     * @param string     $url          Given url.
-     * @param int|null   $expiry       Expired at timestamp.
+     * @param string $url              Given url.
+     * @param int|null $expiry         Expired at timestamp.
      * @param bool|array $ignoreParams Ignore params.
      *
      * @return string Signed url.
@@ -25,11 +31,16 @@ class Signer implements SignerInterface
     public function sign(string $url, int $expiry = null, $ignoreParams = true): string
     {
         $originalUrl = $url;
+        $expiry = $expiry ?? $this->expiry;
+
+        if (is_int($expiry)) {
+            $expiry = time() + 60 * $expiry;
+        }
 
         if ($ignoreParams === true) {
             $url = $this->getUrl($url);
         } else {
-            $url = $this->url($this->getUrl($url), array_except($this->getParameters($url), (array) $ignoreParams));
+            $url = $this->url($this->getUrl($url), array_except($this->getParameters($url), (array)$ignoreParams));
         }
 
         $source = is_null($expiry) ? $url : "${url}::${expiry}";
@@ -48,9 +59,9 @@ class Signer implements SignerInterface
     /**
      * Verify url signature.
      *
-     * @param string     $url          Signed url.
-     * @param string     $signature    Given signature.
-     * @param int|null   $expiry       Expired at timestamp.
+     * @param string $url              Signed url.
+     * @param string $signature        Given signature.
+     * @param int|null $expiry         Expired at timestamp.
      * @param bool|array $ignoreParams Ignore params.
      *
      * @return bool True if valid.
@@ -71,10 +82,22 @@ class Signer implements SignerInterface
             $url = $this->url($url, $params);
         }
 
+        if (is_int($expiry) and $expiry < time()) {
+            throw new InvalidSignatureException(
+                compact('url', 'signature', 'expiry', 'ignoreParams'), 403, 'URL signature expired.'
+            );
+        }
+
         $source = is_null($expiry) ? $url : "${url}::${expiry}";
         $expected = hash_hmac('sha256', $source, $this->secret);
 
-        return hash_equals($expected, $signature);
+        if (hash_equals($expected, $signature) !== true) {
+            throw new InvalidSignatureException(
+                compact('url', 'signature', 'expiry', 'ignoreParams'), 403, 'Invalid signature expired.'
+            );
+        }
+
+        return true;
     }
 
     /**

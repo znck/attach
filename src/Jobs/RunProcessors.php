@@ -1,8 +1,8 @@
 <?php
 namespace Znck\Attach\Jobs;
 
-use Znck\Attach\Contracts\Attachment;
-use Znck\Attach\Contracts\Uploader;
+use Znck\Attach\Contracts\AttachmentContract;
+use Znck\Attach\Contracts\UploaderContract;
 
 class RunProcessors
 {
@@ -11,9 +11,12 @@ class RunProcessors
 
     protected $processors;
 
+    /**
+     * @var \Znck\Attach\Contracts\AttachmentContract|\Znck\Attach\Attachment
+     */
     protected $attachment;
 
-    public function __construct(Uploader $uploader, array $processors)
+    public function __construct(UploaderContract $uploader, array $processors)
     {
         $this->processors = $processors;
         $this->attachment = $uploader->getAttachment();

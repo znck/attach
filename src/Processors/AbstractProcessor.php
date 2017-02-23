@@ -2,39 +2,31 @@
 
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Model;
-use Znck\Attach\Contracts\Attachment;
-use Znck\Attach\Contracts\Finder;
-use Znck\Attach\Contracts\Processor;
+use Znck\Attach\Contracts\AttachmentContract;
+use Znck\Attach\Contracts\FinderContract;
+use Znck\Attach\Contracts\ProcessorContract;
 
-abstract class AbstractProcessor implements Processor
+abstract class AbstractProcessorContract implements ProcessorContract
 {
     /**
-     * @var Attachment|Model
+     * @var AttachmentContract|Model
      */
     protected $attachment;
 
     /**
-     * @var Finder
+     * @var FinderContract
      */
     protected $finder;
 
     /**
-     * @return Finder
+     * @return FinderContract
      */
-    public function getFinder(): Finder
+    public function getFinder(): FinderContract
     {
         if (! $this->finder) {
-            $this->finder = app(Finder::class);
+            $this->finder = app(FinderContract::class);
         }
 
         return $this->finder;
-    }
-
-    /**
-     * @param Filesystem $storage
-     */
-    public function setStorage(Filesystem $storage)
-    {
-        $this->finder->setStorage($storage);
     }
 }

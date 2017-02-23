@@ -1,154 +1,175 @@
 <?php namespace Znck\Attach;
 
-use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
-use Znck\Attach\Contracts\Attachment;
-use Znck\Attach\Contracts\Finder;
-use Znck\Attach\Contracts\Uploader as UploaderInterface;
-use Znck\Attach\Processors\Store;
+use Znck\Attach\Contracts\AttachmentContract;
+use Znck\Attach\Contracts\UploaderContract;
 
-class Uploader implements UploaderInterface
+class Uploader implements UploaderContract
 {
-    protected $related;
-
+    /**
+     * Uploaded by.
+     *
+     * @var \Illuminate\Database\Eloquent\Model
+     */
     protected $owner;
 
     /**
+     * Uploaded for.
+     *
+     * @var \Illuminate\Database\Eloquent\Model
+     */
+    protected $related;
+
+    /**
+     * Uploaded file.
+     *
      * @var \Illuminate\Http\UploadedFile
      */
     protected $file;
 
+    /**
+     * @var Model|Contracts\AttachmentContract|Attachment
+     */
     protected $attachment;
 
+    /**
+     * @var Contracts\FinderContract
+     */
     protected $finder;
 
-    protected $store;
-
-    public function __construct(UploadedFile $file, Attachment $attachment, $store = true)
+    /**
+     * Uploader constructor.
+     *
+     * @param \Illuminate\Http\UploadedFile $file
+     * @param \Znck\Attach\Contracts\AttachmentContract $attachment
+     */
+    public function __construct(UploadedFile $file, AttachmentContract $attachment)
     {
-        $this->setFile($file);
-        $this->setAttachment($attachment);
-        $this->store = $store;
+        $this->attachment = $attachment;
+        $this->file = $file;
     }
 
-    public function attachTo(Model $model): UploaderInterface
+    /**
+     * Add attachment owner.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $owner
+     *
+     * @return $this
+     */
+    public function owner(Model $owner)
     {
-        $this->setRelated($model);
+        $this->owner = $owner;
 
         return $this;
     }
 
-    public function owner(Model $model): UploaderInterface
+    /**
+     * Upload the file.
+     *
+     * @return \Znck\Attach\Contracts\AttachmentContract
+     */
+    public function upload(): AttachmentContract
     {
-        $this->setOwner($model);
+        $this->attachment->filename = $this->file->getClientOriginalName();
+        $this->attachment->mime = $this->file->getMimeType();
+        $this->attachment->size = $this->file->getSize();
+        $this->attachment->extension = $this->file->getClientOriginalExtension();
+        $this->attachment->visibility = $this->attachment->visibility ?? 'private';
 
-        return $this;
+        $this->moveUploadedFile();
+
+        if ($this->owner) {
+            $this->attachment->owner()->associate($this->owner);
+        }
+
+        if (!$this->attachment->save()) {
+            $this->unlinkUploadedFile();
+
+            throw new UploadException('Cannot store uploaded file meta in database.');
+        }
+
+
+        return $this->attachment;
     }
 
-    public function upload(): UploaderInterface
-    {
-        /** @var Attachment|Model $attachment */
-        $attachment = $this->getAttachment();
-
-        if ($this->getOwner()) {
-            $attachment->owner()->associate($this->getOwner());
-        }
-
-        if ($this->getRelated()) {
-            $attachment->saved(
-                function (Attachment $attachment) {
-                    $attachment->related()->save($this->getRelated());
-                }
-            );
-        }
-
-        $file = $this->getFile();
-        $attachment->filename = $file->getClientOriginalName();
-        $attachment->mime = $file->getMimeType();
-        $attachment->size = $file->getSize();
-        $attachment->extension = $file->getClientOriginalExtension();
-        $attachment->visibility = $attachment->visibility ?? 'private';
-        $name = md5_file($this->file->getRealPath()).'.'.$attachment->extension;
-
-        if ($this->store) {
-            $this->getFinder()->putAs($attachment->path, $this->file, $name, $attachment->visibility);
-        }
-
-        $attachment->path = trim($attachment->path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$name;
-
-        return $this;
-    }
-
-    protected function getPath(): string
-    {
-        $attachment = $this->getAttachment();
-
-        if (!$attachment->path) {
-            throw new \InvalidArgumentException('Attachment path is not set.');
-        }
-
-        return $attachment->path;
-    }
-
+    /**
+     * File uploaded by user.
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
     public function getOwner()
     {
         return $this->owner;
     }
 
-    public function setOwner(Model $owner)
-    {
-        $this->owner = $owner;
-    }
-
+    /**
+     * File uploaded for.
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
     public function getRelated()
     {
         return $this->related;
     }
 
-    public function setRelated(Model $related)
-    {
-        $this->related = $related;
-    }
-
-    public function getFile(): UploadedFile
-    {
-        return $this->file;
-    }
-
-    public function setFile(UploadedFile $file)
-    {
-        if (!$file->isValid()) {
-            throw new UploadException();
-        }
-
-        $this->file = $file;
-    }
-
-    public function getAttachment(): Attachment
+    /**
+     * Get attachment.
+     *
+     * @return Contracts\AttachmentContract|Model|Attachment
+     */
+    public function getAttachment(): AttachmentContract
     {
         return $this->attachment;
     }
 
-    public function setAttachment(Attachment $attachment)
+    /**
+     * Prepare content dependent filename.
+     *
+     * @return string
+     */
+    protected function getFilename(): string
     {
-        $this->attachment = $attachment;
+        return md5_file($this->file->getRealPath()).'.'.$this->getAttachment()->extension;
     }
 
-    public function getFinder(): Finder
+    /**
+     * Set related model.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $related
+     *
+     * @return $this
+     */
+    public function attachTo(Model $related)
     {
-        if (!$this->finder) {
-            $this->finder = app(Finder::class);
-        }
-
-        return $this->finder;
-    }
-
-    public function setStorage(Filesystem $storage): UploaderInterface
-    {
-        $this->getFinder()->setStorage($storage);
+        $this->related = $related;
 
         return $this;
+    }
+
+    /**
+     * Move uploaded file to storage.
+     *
+     * @return void
+     */
+    protected function moveUploadedFile()
+    {
+        $name = $this->getFilename();
+
+        $this->attachment->path = $path = rtrim($this->attachment->path, DIRECTORY_SEPARATOR);
+        $this->attachment->path .= DIRECTORY_SEPARATOR.$name;
+
+        $this->finder->putAs($path, $this->file, $name, $this->attachment->visibility);
+    }
+
+    /**
+     * Deleted uploaded file.
+     *
+     * @return void
+     */
+    protected function unlinkUploadedFile()
+    {
+        $this->finder->unlink($this->attachment);
     }
 }

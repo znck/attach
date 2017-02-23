@@ -7,7 +7,7 @@
     | This option defines the attachment model.
     |
     */
-    'model' => \Znck\Attach\Util\Attachment::class,
+    'model' => \Znck\Attach\Attachment::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -17,9 +17,9 @@
     | This option defines the secret key for URL signing.
     |
     */
-    'sign'    => true,
+    'sign' => true,
     'signing' => [
-        'key'    => env('URL_SIGNING_KEY', env('APP_KEY')),
+        'key' => env('URL_SIGNING_KEY', env('APP_KEY')),
         'expiry' => null,
     ],
 
@@ -36,7 +36,7 @@
     */
     'route' => [
         '_path' => '/attach/{filename}',
-        'as'    => 'attach::serve',
-        'uses'  => \Znck\Attach\Util\AttachController::class.'@serve',
+        'as' => 'attach::serve',
+        'uses' => \Znck\Attach\Util\AttachController::class.'@serve',
     ],
 ];

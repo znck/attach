@@ -1,25 +1,26 @@
 <?php namespace Znck\Attach\Observers;
 
-use Znck\Attach\Contracts\Attachment;
-use Znck\Attach\Contracts\Finder;
+use Znck\Attach\Contracts\AttachmentContract;
+use Znck\Attach\Contracts\FinderContract;
 
 class AttachmentObserver
 {
     /**
-     * @var Finder
+     * @var FinderContract
      */
     protected $finder;
 
-    public function getFinder() : Finder
+    public function getFinder(): FinderContract
     {
         if (is_null($this->finder)) {
-            $this->finder = app(Finder::class);
+            $this->finder = app(FinderContract::class);
         }
 
         return $this->finder;
     }
 
-    public function deleted(Attachment $attachment)
+    public function deleted(AttachmentContract $attachment)
     {
+        $this->getFinder()->unlink($attachment);
     }
 }

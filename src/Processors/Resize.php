@@ -1,9 +1,10 @@
 <?php namespace Znck\Attach\Processors;
 
+use Intervention\Image\Constraint;
 use Intervention\Image\ImageManager;
-use Znck\Attach\Contracts\Attachment;
+use Znck\Attach\Contracts\AttachmentContract;
 
-class Resize extends AbstractProcessor
+class Resize extends AbstractProcessorContract
 {
     protected $imageManager;
 
@@ -27,9 +28,9 @@ class Resize extends AbstractProcessor
         $this->height = $height;
     }
 
-    public function getImageManager() : ImageManager
+    public function getImageManager(): ImageManager
     {
-        if (! $this->imageManager) {
+        if (!$this->imageManager) {
             $this->imageManager = app(ImageManager::class);
         }
 
@@ -41,33 +42,41 @@ class Resize extends AbstractProcessor
         $this->imageManager = $imageManager;
     }
 
-    public function process(Attachment $attachment)
+    /**
+     * @param \Znck\Attach\Contracts\AttachmentContract|\Znck\Attach\Attachment $attachment
+     */
+    public function process(AttachmentContract $attachment)
     {
-        $storage = $this->getFinder();
-        $path = ! is_null($this->name) ? $storage->getPath($attachment, $this->name) : $attachment->path;
-
-        $image = $this->getImageManager()->make($storage->get($attachment->path));
-
-        if (is_null($this->height)) {
-            $this->height = (int) ($this->width / $image->width() * $image->height());
+        if (!$this->isImage($attachment->mime)) {
+            return;
         }
 
-        $image->interlace()->fit($this->width, $this->height, function ($constraint) {
+        $finder = $this->getFinder();
+
+        $image = $this->getImageManager()->make($finder->get($attachment));
+
+        if (is_null($this->height)) {
+            $this->height = (int)($this->width / $image->width() * $image->height());
+        }
+
+        $image->interlace()->fit($this->width, $this->height, function (Constraint $constraint) {
             $constraint->upsize();
         });
 
         $format = is_null($this->mime) ? $attachment->mime : $this->mime;
-        $storage->put($path, $image->encode($format), $attachment->visibility);
+        $finder->put($attachment->getPath($this->name), $image->encode($format), $attachment->visibility);
 
-        if (! is_null($this->name)) {
-            $attachment->variations = (array) $attachment->variations + [
-                $this->name => [
-                    'mime' => $format,
-                    'size' => $storage->size($path),
-                ],
-            ];
-        } else {
-            $attachment->size = $storage->size($path);
+        if (!is_null($this->name)) {
+            $attachment->variations = (array)$attachment->variations + [
+                    $this->name => [
+                        'mime' => $format,
+                    ],
+                ];
         }
+    }
+
+    protected function isImage(string $mime)
+    {
+        return preg_match('/^image\/(jpe?g|png|tiff|gif|bmp)$/i', $mime) === 1;
     }
 }

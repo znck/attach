@@ -2,27 +2,62 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Znck\Attach\Contracts\Signer;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
+use Znck\Attach\Contracts\AttachmentContract;
+use Znck\Attach\Contracts\FinderContract;
+use Znck\Attach\Contracts\SignerContract;
 use Znck\Exceptions\InvalidSignatureException;
 
 class AttachController extends Controller
 {
-    public function serve(Request $request, Signer $signer, $filename)
-    {
-        if (config('attach.sign')) {
-            $url = url($request->url(), array_except($request->query(), ['signature', 'expire']));
-            $signature = (string) $request->query('signature');
-            $expiry = $request->query('expiry');
+    protected $shouldSign = true;
 
-            if (! $signer->verify($url, $signature, $expiry)) {
+    /**
+     * @var \Znck\Attach\Contracts\AttachmentContract|\Illuminate\Database\Eloquent\Builder
+     */
+    protected $query;
+
+    public function __construct(AttachmentContract $query)
+    {
+        $this->shouldSign = config('attach.sign', true);
+        $this->query = $query;
+    }
+
+    public function serve(Request $request, FinderContract $finder, SignerContract $signer, $filename)
+    {
+        if ($this->shouldSign) {
+            $signature = (string)$request->query('signature');
+            $expiry = ((int)$request->query('expiry')) ?: null;
+
+            if (!$signer->verify($request->fullUrl(), $signature, $expiry)) {
                 throw new InvalidSignatureException([
                     'signature' => $signature,
                     'expiry' => $expiry,
-                    'url' => $url,
+                    'url' => $request->fullUrl(),
                 ], 403, 'Invalid Signature');
             }
         }
 
-        return serve_attachment($filename);
+        list($attachment, $variation) = $this->findAttachmentByFilename($filename);
+
+        return $finder->download($attachment, $variation);
+    }
+
+    protected function findAttachmentByFilename(string $filename)
+    {
+        if (preg_match('/^(.*)\.([^.]+)\.([^.]+)$/i', $filename, $matches) === 1) {
+            $uid = $matches[1];
+            $variation = $matches[2];
+        } elseif (preg_match('/^(.*)\.([^.]+)$/i', $filename, $matches) === 1) {
+            $uid = $matches[1];
+            $variation = null;
+        } else {
+            throw new NotFoundResourceException();
+        }
+
+        return [
+            $this->query->where($this->query->getAttachmentKeyName(), $uid)->firstOrFail(),
+            $variation,
+        ];
     }
 }
