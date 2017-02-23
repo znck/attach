@@ -8,7 +8,7 @@ interface Downloader
      * Respond with file.
      *
      * @param \Znck\Attach\Contracts\AttachmentContract $attachment
-     * @param string $variation
+     * @param string                                    $variation
      *
      * @return \Illuminate\Http\Response
      */
@@ -18,7 +18,7 @@ interface Downloader
      * Download a file.
      *
      * @param \Znck\Attach\Contracts\AttachmentContract $attachment
-     * @param string|null $variation
+     * @param string|null                               $variation
      *
      * @return \Illuminate\Http\Response
      */
