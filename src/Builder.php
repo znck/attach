@@ -5,6 +5,7 @@ namespace Znck\Attach;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Znck\Attach\Contracts\AttachmentContract;
+use Znck\Attach\Contracts\FinderContract;
 use Znck\Attach\Contracts\UploaderContract;
 use Znck\Attach\Jobs\RunProcessors;
 use Znck\Attach\Jobs\RunProcessorsOnQueue;
@@ -34,7 +35,8 @@ class Builder
     public static function makeFromFile(UploadedFile $file, bool $store = true): self
     {
         $attachment = app(AttachmentContract::class);
-        $uploader = app(UploaderContract::class, [$file, $attachment]);
+        $finder = app(FinderContract::class);
+        $uploader = app(UploaderContract::class, [$file, $attachment, $finder]);
 
         return new self($uploader);
     }

@@ -4,6 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Znck\Attach\Contracts\AttachmentContract;
+use Znck\Attach\Contracts\FinderContract;
 use Znck\Attach\Contracts\UploaderContract;
 
 class Uploader implements UploaderContract
@@ -44,11 +45,13 @@ class Uploader implements UploaderContract
      *
      * @param \Illuminate\Http\UploadedFile $file
      * @param \Znck\Attach\Contracts\AttachmentContract $attachment
+     * @param \Znck\Attach\Contracts\FinderContract $finder
      */
-    public function __construct(UploadedFile $file, AttachmentContract $attachment)
+    public function __construct(UploadedFile $file, AttachmentContract $attachment, FinderContract $finder)
     {
-        $this->attachment = $attachment;
         $this->file = $file;
+        $this->finder = $finder;
+        $this->attachment = $attachment;
     }
 
     /**

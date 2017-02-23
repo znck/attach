@@ -6,7 +6,7 @@ use Illuminate\Http\UploadedFile;
 
 interface UploaderContract
 {
-    public function __construct(UploadedFile $file, AttachmentContract $attachment);
+    public function __construct(UploadedFile $file, AttachmentContract $attachment, FinderContract $finder);
 
     public function upload(): AttachmentContract;
 
