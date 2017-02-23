@@ -80,25 +80,25 @@ class Downloader implements DownloaderInterface
 
         return [
             'filename' => $attach->filename,
-            'mime' => $attach->mime,
-            'size' => $attach->size,
-            'title' => $attach->title,
+            'mime'     => $attach->mime,
+            'size'     => $attach->size,
+            'title'    => $attach->title,
         ];
     }
 
     public function getAttachmentVariationMeta(string $name): array
     {
         $attach = $this->attachment;
-        if (!array_key_exists($name, $attach->variations)) {
+        if (! array_key_exists($name, $attach->variations)) {
             throw new NotFoundHttpException();
         }
         $variation = $attach->variations[$name];
 
         return [
             'filename' => $attach->filename,
-            'mime' => $variation['mime'],
-            'size' => $variation['size'],
-            'title' => $attach->title,
+            'mime'     => $variation['mime'],
+            'size'     => $variation['size'],
+            'title'    => $attach->title,
         ];
     }
 
@@ -146,7 +146,7 @@ class Downloader implements DownloaderInterface
 
     protected function isVariationRequested(): bool
     {
-        return !is_null($this->variation);
+        return ! is_null($this->variation);
     }
 
     public function getFinder(): Finder
@@ -170,7 +170,7 @@ class Downloader implements DownloaderInterface
 
     /**
      * @param string $filename
-     * @param array $headers
+     * @param array  $headers
      *
      * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
@@ -185,7 +185,7 @@ class Downloader implements DownloaderInterface
         return $response->file($this->getRequestedFile(),
             $headers +
             [
-                'Content-Type' => $meta['mime'],
+                'Content-Type'        => $meta['mime'],
                 'Content-Disposition' => 'attachment; filename="'.addslashes($this->attachment->filename).'"',
             ]);
     }

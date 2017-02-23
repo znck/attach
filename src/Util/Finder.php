@@ -2,7 +2,6 @@
 
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Filesystem\FilesystemManager;
-use Illuminate\Http\UploadedFile;
 use League\Flysystem\FilesystemInterface;
 use Znck\Attach\Contracts\Attachment;
 use Znck\Attach\Contracts\Finder as FinderInterface;
