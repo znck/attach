@@ -37,9 +37,9 @@ class Finder implements FinderContract
      * Finder constructor.
      *
      * @param \Illuminate\Filesystem\FilesystemManager $manager Laravel filesystem manager.
-     * @param \Znck\Attach\DownloaderFactory $adaptor           Downloader factory.
-     * @param array $disks                                      Disk configurations.
-     * @param string $default                                   Default disk.
+     * @param \Znck\Attach\DownloaderFactory           $adaptor Downloader factory.
+     * @param array                                    $disks   Disk configurations.
+     * @param string                                   $default Default disk.
      */
     public function __construct(
         FilesystemManager $manager,
@@ -57,7 +57,7 @@ class Finder implements FinderContract
      * Get original file contents.
      *
      * @param AttachmentContract|Attachment $attachment
-     * @param string $variation
+     * @param string                        $variation
      *
      * @return string
      */
@@ -70,7 +70,7 @@ class Finder implements FinderContract
      * Respond with file.
      *
      * @param AttachmentContract|Attachment $attachment
-     * @param string $variation
+     * @param string                        $variation
      *
      * @return \Illuminate\Http\Response
      */
@@ -84,7 +84,7 @@ class Finder implements FinderContract
      * Download a file.
      *
      * @param AttachmentContract $attachment
-     * @param string|null $variation
+     * @param string|null        $variation
      *
      * @return \Illuminate\Http\Response
      */
@@ -128,11 +128,11 @@ class Finder implements FinderContract
     /**
      * Store file on the disk with given name.
      *
-     * @param string $path
+     * @param string                        $path
      * @param \Illuminate\Http\UploadedFile $content
-     * @param string $filename
-     * @param null|string $visibility
-     * @param null|string $disk
+     * @param string                        $filename
+     * @param null|string                   $visibility
+     * @param null|string                   $disk
      *
      * @return void
      */
@@ -148,7 +148,7 @@ class Finder implements FinderContract
     }
 
     /**
-     * @param  AttachmentContract|Attachment $attachment
+     * @param AttachmentContract|Attachment $attachment
      *
      * @return \Illuminate\Filesystem\FilesystemAdapter|\Illuminate\Contracts\Filesystem\Filesystem
      */
@@ -160,10 +160,11 @@ class Finder implements FinderContract
     /**
      * Get driver for disk.
      *
-     * @param  AttachmentContract|Attachment $attachment
+     * @param AttachmentContract|Attachment $attachment
+     *
+     * @throws \Znck\Attach\Exceptions\InvalidDiskException
      *
      * @return string
-     * @throws \Znck\Attach\Exceptions\InvalidDiskException
      */
     protected function getDriver(AttachmentContract $attachment): string
     {
