@@ -85,7 +85,7 @@ class Uploader implements UploaderInterface
     {
         $attachment = $this->getAttachment();
 
-        if (!$attachment->path) {
+        if (! $attachment->path) {
             throw new \InvalidArgumentException('Attachment path is not set.');
         }
 
@@ -119,7 +119,7 @@ class Uploader implements UploaderInterface
 
     public function setFile(UploadedFile $file)
     {
-        if (!$file->isValid()) {
+        if (! $file->isValid()) {
             throw new UploadException();
         }
 
@@ -138,7 +138,7 @@ class Uploader implements UploaderInterface
 
     public function getFinder(): Finder
     {
-        if (!$this->finder) {
+        if (! $this->finder) {
             $this->finder = app(Finder::class);
         }
 
