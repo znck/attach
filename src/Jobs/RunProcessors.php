@@ -1,7 +1,6 @@
 <?php
 namespace Znck\Attach\Jobs;
 
-use Znck\Attach\Contracts\AttachmentContract;
 use Znck\Attach\Contracts\UploaderContract;
 
 class RunProcessors
