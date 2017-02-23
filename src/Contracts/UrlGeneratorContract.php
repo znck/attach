@@ -6,9 +6,9 @@ interface UrlGeneratorContract
      * Create url from Attachment.
      *
      * @param AttachmentContract $attachment
-     * @param string|null $variation
-     * @param array $params
-     * @param bool|null $sign
+     * @param string|null        $variation
+     * @param array              $params
+     * @param bool|null          $sign
      *
      * @return string
      */

@@ -42,7 +42,7 @@ class Builder
     public static function register(string $name, $abstract)
     {
         if (array_key_exists($name, self::$processors)) {
-            self::$processors[$name] = array_merge((array)self::$processors[$name], (array)$abstract);
+            self::$processors[$name] = array_merge((array) self::$processors[$name], (array) $abstract);
         } else {
             self::$processors[$name] = $abstract;
         }
@@ -63,7 +63,7 @@ class Builder
 
         $parameters = $this->beforeUpload($name, $parameters);
 
-        $result = call_user_func_array([$this->uploader, $name], (array)$parameters);
+        $result = call_user_func_array([$this->uploader, $name], (array) $parameters);
 
         $this->afterUpload($name);
 
@@ -85,8 +85,8 @@ class Builder
     protected function isProcessor(string $name, array $parameters)
     {
         if (isset(self::$processors[$name])) {
-            foreach ((array)self::$processors[$name] as $abstract) {
-                $processor = app($abstract, (array)$parameters);
+            foreach ((array) self::$processors[$name] as $abstract) {
+                $processor = app($abstract, (array) $parameters);
 
                 if ($this->shouldQueue) {
                     $this->queuedProcessors[] = $processor;
@@ -133,7 +133,7 @@ class Builder
      */
     protected function afterUpload($name)
     {
-        if (!hash_equals('upload', $name)) {
+        if (! hash_equals('upload', $name)) {
             return;
         }
 

@@ -7,7 +7,7 @@ use Znck\Attach\Contracts\AttachmentContract;
 use Znck\Attach\Traits\AttachmentTrait;
 
 /**
- * Attachment Model
+ * Attachment Model.
  *
  * @property string $path       Absolute file path.
  * @property string $title      Preview name for file.
