@@ -26,14 +26,14 @@ class AttachController extends Controller
     public function serve(Request $request, FinderContract $finder, SignerContract $signer, $filename)
     {
         if ($this->shouldSign) {
-            $signature = (string)$request->query('signature');
-            $expiry = ((int)$request->query('expiry')) ?: null;
+            $signature = (string) $request->query('signature');
+            $expiry = ((int) $request->query('expiry')) ?: null;
 
-            if (!$signer->verify($request->fullUrl(), $signature, $expiry)) {
+            if (! $signer->verify($request->fullUrl(), $signature, $expiry)) {
                 throw new InvalidSignatureException([
                     'signature' => $signature,
-                    'expiry' => $expiry,
-                    'url' => $request->fullUrl(),
+                    'expiry'    => $expiry,
+                    'url'       => $request->fullUrl(),
                 ], 403, 'Invalid Signature');
             }
         }

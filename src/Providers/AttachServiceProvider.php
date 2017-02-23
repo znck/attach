@@ -72,7 +72,7 @@ class AttachServiceProvider extends ServiceProvider
      */
     public function registerRoutes(Router $router)
     {
-        if (!$this->app->routesAreCached()) {
+        if (! $this->app->routesAreCached()) {
             $route = $this->getConfig('route');
 
             if (is_array($route)) {
