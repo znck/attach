@@ -48,9 +48,10 @@ class AttachServiceProvider extends ServiceProvider
         $this->mergeConfigFrom($this->configPath, 'attach');
         $this->registerRoutes($this->app['router']);
 
+
         $this->app->bind(AttachmentContract::class, $this->getConfig('model'));
         $this->app->bind(UploaderContract::class, Uploader::class);
-        $this->app->bind(UrlGeneratorContract::class, UrlGenerator::class);
+
 
         $this->app->singleton(FinderContract::class, function () {
             return new Finder(
@@ -60,8 +61,17 @@ class AttachServiceProvider extends ServiceProvider
                 config('filesystems.default')
             );
         });
+
         $this->app->singleton(SignerContract::class, function () {
             return new Signer($this->getConfig('signing.key'), $this->getConfig('signing.expiry'));
+        });
+
+        $this->app->singleton(UrlGeneratorContract::class, function () {
+            return new UrlGenerator(
+                $this->app->make(SignerContract::class),
+                $this->getConfig('route'),
+                $this->getConfig('sign')
+            );
         });
 
         Builder::register('resize', Resize::class);
