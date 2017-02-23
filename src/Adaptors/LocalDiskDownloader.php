@@ -70,7 +70,7 @@ class LocalDiskDownloader implements Downloader
      */
     protected function getDisk($attachment)
     {
-        return $this->manager->disk($attachment->disk);
+        return $this->manager->disk($attachment->disk)->getAdapter();
     }
 
     /**
