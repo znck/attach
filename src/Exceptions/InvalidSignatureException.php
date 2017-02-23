@@ -9,13 +9,14 @@ class InvalidSignatureException extends HttpException
      */
     protected $errors;
 
-    public function __construct($errors, $statusCode, $message = null, \Exception $previous = null, array $headers = array(), $code = 0) {
+    public function __construct($errors, $statusCode, $message = null, \Exception $previous = null, array $headers = [], $code = 0)
+    {
         parent::__construct($statusCode, $message, $previous, $headers, $code);
         $this->errors = $errors;
     }
 
-    public function getErrors() {
+    public function getErrors()
+    {
         return $this->errors;
     }
-
 }
