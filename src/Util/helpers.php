@@ -13,8 +13,12 @@ if (!function_exists('attach_url')) {
      *
      * @return null|string
      */
-    function attach_url(AttachmentContract $attachment, string $var = null, $params = [], bool $sign = null)
+    function attach_url($attachment, string $var = null, $params = [], bool $sign = null)
     {
+        if (!($attachment instanceof AttachmentContract)) {
+            return null;
+        }
+
         return app(Znck\Attach\Contracts\UrlGeneratorContract::class)->url($attachment, $var, $params, $sign);
     }
 }
