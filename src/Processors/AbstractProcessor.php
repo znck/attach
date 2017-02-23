@@ -1,6 +1,5 @@
 <?php namespace Znck\Attach\Processors;
 
-use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Model;
 use Znck\Attach\Contracts\AttachmentContract;
 use Znck\Attach\Contracts\FinderContract;

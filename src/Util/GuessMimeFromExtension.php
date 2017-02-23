@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesserInterface;
 
 class GuessMimeFromExtension implements MimeTypeGuesserInterface
 {
-
     const APACHE_MIMES = 'http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types';
     /**
      * @var \Illuminate\Contracts\Cache\Repository
@@ -24,9 +23,10 @@ class GuessMimeFromExtension implements MimeTypeGuesserInterface
      *
      * @param string $path The path to the file
      *
-     * @return string The mime type or NULL, if none could be guessed
      * @throws FileNotFoundException If the file does not exist
      * @throws AccessDeniedException If the file could not be read
+     *
+     * @return string The mime type or NULL, if none could be guessed
      */
     public function guess($path)
     {
@@ -36,7 +36,8 @@ class GuessMimeFromExtension implements MimeTypeGuesserInterface
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function getMimes() {
+    public function getMimes()
+    {
         return $this->cache->remember('vendor:znck/trust.mimes', 1440, function () {
             return collect($this->generateUpToDateMimeArray());
         });
@@ -46,7 +47,7 @@ class GuessMimeFromExtension implements MimeTypeGuesserInterface
     {
         $types = [];
         $lines = array_filter(explode("\n", file_get_contents(self::APACHE_MIMES)), function ($line) {
-            return !starts_with($line, '#');
+            return ! starts_with($line, '#');
         });
 
         foreach ($lines as $line) {

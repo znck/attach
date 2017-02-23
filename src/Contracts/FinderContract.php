@@ -6,7 +6,7 @@ interface FinderContract extends Downloader
      * Get original file contents.
      *
      * @param \Znck\Attach\Contracts\AttachmentContract $attachment
-     * @param string $variation
+     * @param string                                    $variation
      *
      * @return string
      */
@@ -38,7 +38,7 @@ interface FinderContract extends Downloader
      *
      * @param string $path
      * @param $content
-     * @param string $filename
+     * @param string      $filename
      * @param null|string $visibility
      * @param null|string $disk
      *
