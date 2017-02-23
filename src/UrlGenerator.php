@@ -39,9 +39,9 @@ class UrlGenerator implements UrlGeneratorContract
      * Create url from Attachment.
      *
      * @param AttachmentContract|Attachment $attachment
-     * @param string|null $variation
-     * @param array $params
-     * @param bool|null $sign
+     * @param string|null                   $variation
+     * @param array                         $params
+     * @param bool|null                     $sign
      *
      * @return string
      */
@@ -69,7 +69,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     /**
      * @param \Znck\Attach\Contracts\AttachmentContract|Attachment $attachment
-     * @param string $variation
+     * @param string                                               $variation
      *
      * @return string
      */
@@ -78,7 +78,7 @@ class UrlGenerator implements UrlGeneratorContract
         $basename = $attachment->getAttachmentKey();
         $ext = $attachment->extension;
 
-        if (!$variation) {
+        if (! $variation) {
             return "${basename}.${ext}";
         }
 
