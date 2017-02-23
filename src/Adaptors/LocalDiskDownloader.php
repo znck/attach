@@ -27,7 +27,7 @@ class LocalDiskDownloader implements Downloader
      * Respond with file.
      *
      * @param \Znck\Attach\Contracts\AttachmentContract|\Znck\Attach\Attachment $attachment
-     * @param string $variation
+     * @param string                                                            $variation
      *
      * @return BinaryFileResponse
      */
@@ -50,7 +50,7 @@ class LocalDiskDownloader implements Downloader
      * Download a file.
      *
      * @param \Znck\Attach\Contracts\AttachmentContract|\Znck\Attach\Attachment $attachment
-     * @param string|null $variation
+     * @param string|null                                                       $variation
      *
      * @return BinaryFileResponse
      */
@@ -75,7 +75,7 @@ class LocalDiskDownloader implements Downloader
 
     /**
      * @param \Znck\Attach\Attachment|\Znck\Attach\Contracts\AttachmentContract $attachment
-     * @param string|null $variation
+     * @param string|null                                                       $variation
      *
      * @return array
      */
