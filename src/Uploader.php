@@ -43,9 +43,9 @@ class Uploader implements UploaderContract
     /**
      * Uploader constructor.
      *
-     * @param \Illuminate\Http\UploadedFile $file
+     * @param \Illuminate\Http\UploadedFile             $file
      * @param \Znck\Attach\Contracts\AttachmentContract $attachment
-     * @param \Znck\Attach\Contracts\FinderContract $finder
+     * @param \Znck\Attach\Contracts\FinderContract     $finder
      *
      * @return UploaderContract
      */
@@ -95,12 +95,11 @@ class Uploader implements UploaderContract
             $this->attachment->owner()->associate($this->owner);
         }
 
-        if (!$this->attachment->save()) {
+        if (! $this->attachment->save()) {
             $this->unlinkUploadedFile();
 
             throw new UploadException('Cannot store uploaded file meta in database.');
         }
-
 
         return $this->attachment;
     }
