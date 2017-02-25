@@ -32,11 +32,11 @@ class Builder
         return self::makeFromFile($request->file($key), $store);
     }
 
-    public static function makeFromFile(UploadedFile $file, bool $store = true): self
+    public static function makeFromFile(UploadedFile $file, bool $_ = true): self
     {
-        $attachment = app(AttachmentContract::class);
-        $finder = app(FinderContract::class);
-        $uploader = app(UploaderContract::class, [$file, $attachment, $finder]);
+        $attachment = resolve(AttachmentContract::class);
+        $finder = resolve(FinderContract::class);
+        $uploader = resolve(UploaderContract::class)->make($file, $attachment, $finder);
 
         return new self($uploader);
     }

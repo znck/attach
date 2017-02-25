@@ -46,12 +46,20 @@ class Uploader implements UploaderContract
      * @param \Illuminate\Http\UploadedFile $file
      * @param \Znck\Attach\Contracts\AttachmentContract $attachment
      * @param \Znck\Attach\Contracts\FinderContract $finder
+     *
+     * @return UploaderContract
      */
-    public function __construct(UploadedFile $file, AttachmentContract $attachment, FinderContract $finder)
-    {
-        $this->file = $file;
-        $this->finder = $finder;
-        $this->attachment = $attachment;
+    public static function make(
+        UploadedFile $file,
+        AttachmentContract $attachment,
+        FinderContract $finder
+    ): UploaderContract {
+        $instance = new static();
+        $instance->file = $file;
+        $instance->finder = $finder;
+        $instance->attachment = $attachment;
+
+        return $instance;
     }
 
     /**
