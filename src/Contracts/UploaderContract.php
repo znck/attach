@@ -1,6 +1,5 @@
 <?php namespace Znck\Attach\Contracts;
 
-use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 
