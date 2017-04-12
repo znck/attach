@@ -30,7 +30,7 @@ class Resize extends AbstractProcessorContract
 
     public function getImageManager(): ImageManager
     {
-        if (!$this->imageManager) {
+        if (! $this->imageManager) {
             $this->imageManager = app(ImageManager::class);
         }
 
@@ -47,7 +47,7 @@ class Resize extends AbstractProcessorContract
      */
     public function process(AttachmentContract $attachment)
     {
-        if (!$this->isImage($attachment->mime)) {
+        if (! $this->isImage($attachment->mime)) {
             return;
         }
 
@@ -56,7 +56,7 @@ class Resize extends AbstractProcessorContract
         $image = $this->getImageManager()->make($finder->get($attachment));
 
         if (is_null($this->height)) {
-            $this->height = (int)($this->width / $image->width() * $image->height());
+            $this->height = (int) ($this->width / $image->width() * $image->height());
         }
 
         $image->interlace()->fit($this->width, $this->height, function (Constraint $constraint) {
@@ -66,8 +66,8 @@ class Resize extends AbstractProcessorContract
         $format = is_null($this->mime) ? $attachment->mime : $this->mime;
         $finder->put($attachment->getPath($this->name), $image->encode($format), $attachment->visibility);
 
-        if (!is_null($this->name)) {
-            $attachment->variations = (array)$attachment->variations + [
+        if (! is_null($this->name)) {
+            $attachment->variations = (array) $attachment->variations + [
                     $this->name => [
                         'mime' => $format,
                     ],

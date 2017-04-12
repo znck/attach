@@ -12,7 +12,6 @@ trait AttachmentTrait
         return 'id';
     }
 
-
     /**
      * Get path.
      *
@@ -22,7 +21,7 @@ trait AttachmentTrait
      */
     public function getPath(string $variation = null): string
     {
-        if (!$variation) {
+        if (! $variation) {
             return $this->path;
         }
 

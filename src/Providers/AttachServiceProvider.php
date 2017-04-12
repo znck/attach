@@ -48,10 +48,8 @@ class AttachServiceProvider extends ServiceProvider
         $this->mergeConfigFrom($this->configPath, 'attach');
         $this->registerRoutes($this->app['router']);
 
-
         $this->app->bind(AttachmentContract::class, $this->getConfig('model'));
         $this->app->bind(UploaderContract::class, Uploader::class);
-
 
         $this->app->singleton(FinderContract::class, function () {
             return new Finder(
@@ -82,7 +80,7 @@ class AttachServiceProvider extends ServiceProvider
      */
     public function registerRoutes(Router $router)
     {
-        if (!$this->app->routesAreCached()) {
+        if (! $this->app->routesAreCached()) {
             $route = $this->getConfig('route');
 
             if (is_array($route)) {
