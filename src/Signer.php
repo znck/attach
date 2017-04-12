@@ -22,8 +22,8 @@ class Signer implements SignerInterface
     /**
      * Create a signed url.
      *
-     * @param string $url              Given url.
-     * @param int|null $expiry         Expired at timestamp.
+     * @param string     $url          Given url.
+     * @param int|null   $expiry       Expired at timestamp.
      * @param bool|array $ignoreParams Ignore params.
      *
      * @return string Signed url.
@@ -40,7 +40,7 @@ class Signer implements SignerInterface
         if ($ignoreParams === true) {
             $url = $this->getUrl($url);
         } else {
-            $url = $this->url($this->getUrl($url), array_except($this->getParameters($url), (array)$ignoreParams));
+            $url = $this->url($this->getUrl($url), array_except($this->getParameters($url), (array) $ignoreParams));
         }
 
         $source = is_null($expiry) ? $url : "${url}::${expiry}";
@@ -59,9 +59,9 @@ class Signer implements SignerInterface
     /**
      * Verify url signature.
      *
-     * @param string $url              Signed url.
-     * @param string $signature        Given signature.
-     * @param int|null $expiry         Expired at timestamp.
+     * @param string     $url          Signed url.
+     * @param string     $signature    Given signature.
+     * @param int|null   $expiry       Expired at timestamp.
      * @param bool|array $ignoreParams Ignore params.
      *
      * @return bool True if valid.
